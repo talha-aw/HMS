@@ -38,15 +38,6 @@ using namespace std;
 //}
 int main()
 {
-	MyClass my;
-	my.name = "Talha";
-	my.id = 10;
-	MyClass my1;
-	my1.name = "Huzaifa";
-	my1.id = 20;
-
-	my1=tempaMethod<MyClass>(my, my1);
-	cout << my1.name << my1.id;
 	global();
 	Talha();
 	return 0;
