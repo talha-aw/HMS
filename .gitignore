@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
-#Ignore
+
+# Ignore .vs folder
 .vs/
 
 # Compiled Object files
