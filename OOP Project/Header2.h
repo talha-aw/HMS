@@ -6,7 +6,3 @@ void Talha()
 {
 	cout << "Huzaifa";
 }
-void display123()
-{
-	cout << "Header1";
-}
