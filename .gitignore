@@ -30,3 +30,8 @@ bin/
 *.exe
 *.out
 *.app
+*.ipch
+*.db-shm
+*.vsidx
+*.db
+*.vsidx
