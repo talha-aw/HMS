@@ -1,5 +1,8 @@
 # Prerequisites
 *.d
+#Ignore
+v17/
+FileContentIndex/
 
 # Compiled Object files
 *.slo
