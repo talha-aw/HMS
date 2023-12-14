@@ -3,6 +3,8 @@
 
 # Ignore .vs folder
 .vs/
+# Ignore x64 folder
+x64/
 
 # Compiled Object files
 *.slo
