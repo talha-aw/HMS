@@ -8,6 +8,50 @@
 using namespace std;
 bool isAdmin = false;
 string Masterkey = "1234";
+string loggedUser;
+
+
+
+
+
+
+
+void display()
+{
+	cout << "\t\t\t\t\t                   *                        *" << endl;
+	cout << "\t\t\t\t\t                  **          *    *        **     " << endl;
+	cout << "\t\t\t\t\t              ******          ******        ******   " << endl;
+	cout << "\t\t\t\t\t             ********         ******        ******** " << endl;
+	cout << "\t\t\t\t\t            *********         ******        *********   " << endl;
+	cout << "\t\t\t\t\t           **********         ******        **********" << endl;
+	cout << "\t\t\t\t\t          ************       ********       ***********" << endl;
+	cout << "\t\t\t\t\t        ***************     **********     *************" << endl;
+	cout << "\t\t\t\t\t       *******  ____  ____ _____.   . ___  .     .*******" << endl;
+	cout << "\t\t\t\t\t      ******** /     |    |  |  |   ||   | |\\   /|********" << endl;
+	cout << "\t\t\t\t\t     *********|   ---|    |  |  |---||---| | \\ / |*********" << endl;
+	cout << "\t\t\t\t\t     ********* \\____||____|  |  |   ||   | |  V  |*********" << endl;
+	cout << "\t\t\t\t\t     ***************.   . ___ _____ ___ .   ***************" << endl;
+	cout << "\t\t\t\t\t     ***************|   ||   |  |  |    |   ***************" << endl;
+	cout << "\t\t\t\t\t     ***************|---||   |  |  |--- |   ***************" << endl;
+	cout << "\t\t\t\t\t      **************|   ||___|  |  |___ |___**************" << endl;
+	cout << "\t\t\t\t\t       **************************************************" << endl;
+	cout << "\t\t\t\t\t        ********   ******  **********  ******   ********" << endl;
+	cout << "\t\t\t\t\t         ******      ***    *******     ***     ******" << endl;
+	cout << "\t\t\t\t\t          *****       *     ******       *      *****" << endl;
+	cout << "\t\t\t\t\t           ****              ****               ****" << endl;
+	cout << "\t\t\t\t\t            ***               **                ***" << endl;
+	cout << "\t\t\t\t\t              *               **                *" << endl;
+	cout << "\t\t\t\t\t                              **                   " << endl;
+	_getch();
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -32,9 +76,9 @@ public:
 
 int main()
 {
-
-	Authentication a;
-	a.signup();
+	display();
+	/*Authentication a;
+	a.signup();*/
 	return 0;
 }
 
