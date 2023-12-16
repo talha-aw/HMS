@@ -24,11 +24,16 @@ public:
 		cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
 		cout << "\t\t\t\t # |          2. Guest                      | #" << endl;
 		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t Enter Your Choice: ";
 		cin >> choice;
+
 	}
+
+
+
 	void cFile()
 	{
 		ofstream file("User.txt", ios::app);
@@ -60,7 +65,7 @@ public:
 					}
 					getline(ss, temp, '$');
 					getline(ss, temp, '$');
-					int check = stoi(temp);
+					int check = stoi(temp); 
 					if (check == userType)
 					{
 						isUser = true;
@@ -113,9 +118,9 @@ public:
 			getline(cin >> ws, key);
 			if (key == Masterkey)
 			{
-				isAdmin = true;
 				if (!checkExist(1))
 				{
+					isAdmin = true;
 					cFile();
 				}
 				else
@@ -138,9 +143,9 @@ public:
 		}
 		case 2:
 		{
-			isAdmin = false;
 			if (!checkExist(0))
 			{
+				isAdmin = false;
 				cFile();
 			}
 			else
