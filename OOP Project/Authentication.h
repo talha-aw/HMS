@@ -11,7 +11,29 @@ class Authentication
 private:
 	string username;
 	string password;
+	string isadmin;
 public:
+	void setisadmin()
+	{
+		extern bool isAdmin;
+		isadmin = isAdmin;
+	}
+	
+	
+	string getusername()
+	{
+		return username;
+	}
+	string getpassword()
+	{
+		return password;
+	}
+
+	string getisadmin()
+	{
+		return isadmin;
+	}
+
 	void login()
 	{
 		int choice;
@@ -34,51 +56,37 @@ public:
 
 
 
-	void cFile()
+	void cFile(Authentication& user)
 	{
-		ofstream file("User.txt", ios::app);
+		
+		ofstream file("User.txt", ios::binary | ios::app);
 		if (file.is_open())
 		{
-			extern bool isAdmin;
-			file << username + "$" + password + "$" << isAdmin << endl;
+			file.write(reinterpret_cast<char*>(&user), sizeof(Authentication));
 			file.close();
 		}
 		cout << "\t\t\t\t Registration Successful \n\t\t\t\t Press Any Key to Continue......";
+		_getch();
 	}
-	bool checkExist(int userType)
+	bool checkExist(int userType,Authentication& user)
 	{
-		string temp, line;
-		bool isName = false;
-		bool isUser = false;
-		ifstream rfile("User.txt");
+		Authentication temp;
+		string name;
+		string is;
+		name = user.getusername();
+		is = user.getisadmin();
+		bool isFound = false;
+		ifstream rfile("User.txt",ios::binary);
 		if (rfile.is_open())
 		{
-			while (getline(rfile, line))
+
+			while (rfile.read(reinterpret_cast<char*>(&temp),sizeof(Authentication)))
 			{
-				if (!line.length() == 0)
-				{
-					stringstream ss(line);
-					getline(ss, temp,'$');
-					if (temp == username)
-					{
-						isName = true;
-					}
-					getline(ss, temp, '$');
-					getline(ss, temp, '$');
-					int check = stoi(temp); 
-					if (check == userType)
-					{
-						isUser = true;
-					}
-				}
-				if (isName && isUser)
-				{
-					return true;
-				}
+				
 			}
-			rfile.close();
-			
 		}
+		rfile.close();
+
 		return false;
 	}
 	void signup()
@@ -90,11 +98,11 @@ public:
 		cout << "\t\t\t\t # |          ACCOUNT REGISTRATION          | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		Authentication user;
 		cout << "\t\t\t\t Enter User Name: ";
-		getline(cin >> ws, username);
+		getline(cin >> ws, user.username);
 		cout << "\t\t\t\t Enter Password: ";
-		getline(cin >> ws, password);
-		
+		getline(cin >> ws, user.password);
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t # |            REGISTRATION FOR            | #" << endl;
@@ -118,17 +126,26 @@ public:
 			getline(cin >> ws, key);
 			if (key == Masterkey)
 			{
-				if (!checkExist(1))
+				
+				if (0) 
 				{
-					isAdmin = true;
-					cFile();
+					user.isadmin = "1";
+					cFile(user);
 				}
 				else
 				{
-					cout << "\t\t\t\t Username already Exist"<<endl;
-					cout << "\t\t\t\t Returning to Menu....";
-					Sleep(1000);
-					return;
+					if (!checkExist(1,user))
+					{
+						user.isadmin = "1";
+						cFile(user);
+					}
+					else
+					{
+						cout << "\t\t\t\t Username already Exist"<<endl;
+						cout << "\t\t\t\t Returning to Menu....";
+						Sleep(1000);
+						return;
+					}
 				}
 				
 				break;
@@ -143,10 +160,10 @@ public:
 		}
 		case 2:
 		{
-			if (!checkExist(0))
+			if (!checkExist(0,user))
 			{
 				isAdmin = false;
-				cFile();
+				cFile(user);
 			}
 			else
 			{
