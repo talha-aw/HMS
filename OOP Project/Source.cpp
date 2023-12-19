@@ -4,7 +4,7 @@
 #include<string.h>
 #include<windows.h>
 #include<fstream>
-#include"Authentication.h";
+#include"Header.h";
 using namespace std;
 bool isAdmin = false;
 string Masterkey = "1234";
@@ -76,7 +76,7 @@ public:
 
 int main()
 {
-	//display();
+	display();
 	Authentication a;
 	a.signup();
 	return 0;
