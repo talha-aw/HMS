@@ -4,13 +4,9 @@
 #include<string.h>
 #include<windows.h>
 #include<fstream>
-#include"Authentication.h";
+#include<sstream>
+#include"Authentication.h"
 using namespace std;
-string Masterkey = "1234";
-string loggedUser;
-bool isLoggedin = false;
-
-
 
 void display()
 {
@@ -42,30 +38,57 @@ void display()
 
 }
 
-
-class Employees
+void menu()
 {
-private:
-	string name;
-	string id;
-	int age;
-	string cnic;
-	string address;
-	string phone;
-	string gender;
+	cout << "\t\t\t\t   ____  ____ _____.   . ___  .     ." << endl;
+	cout << "\t\t\t\t /     |    |  |  |   ||   | |\\   /|" << endl;
+	cout << "\t\t\t\t |   ---|    |  |  |---||---| | \\ / |" << endl;
+	cout << "\t\t\t\t  \\____||____|  |  |   ||   | |  V  |" << endl;
+	cout << "\t\t\t\t .   . ___ _____ ___ .   " << endl;
+	cout << "\t\t\t\t |   ||   |  |  |    |   " << endl;
+	cout << "\t\t\t\t |---||   |  |  |--- |   " << endl;
+	cout << "\t\t\t\t |   ||___|  |  |___ |___" << endl;
 
-public:
-	Employees();
-	~Employees();
-
-	void input();
-};
-
-int main()
-{
-	display();
-	Authentication a;
-	a.loginMenu();
-	return 0;
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t # |             ::MAIN MENU::              | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # |            1. Sign Up                  | #" << endl;
+	cout << "\t\t\t\t # |            2. Login                    | #" << endl;
+	cout << "\t\t\t\t # |            3. About                    | #" << endl;
+	cout << "\t\t\t\t # |            4. Exit                     | #" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t **********************************************" << endl;
+	int choice;
+	cout << "\t\t\t\t Enter Choice";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		extern bool isLoggedin;
+		if (!isLoggedin)
+		{
+			Authentication user;
+			user.signup();
+		}
+		break;
+	}
+	case 2:
+	{
+		Authentication user;
+		user.loginMenu();
+		break;
+	}
+	default:
+		break;
+	}
 }
 
+
+void start()
+{
+	//display();
+	menu();
+
+}
