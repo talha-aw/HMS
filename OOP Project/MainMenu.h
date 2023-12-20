@@ -5,6 +5,8 @@
 #include<windows.h>
 #include<fstream>
 #include<sstream>
+#include<iomanip>
+#include<chrono>
 #include"Authentication.h"
 using namespace std;
 
@@ -88,7 +90,7 @@ void menu()
 
 void start()
 {
-	//display();
+	display();
 	menu();
-
+	
 }
