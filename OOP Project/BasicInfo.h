@@ -32,14 +32,148 @@ private:
 	long long int wallet;
 	string check_in;
 	string check_out;
-	static int ReservationID;
-	
+	long int ReservationID;
 
 public:
+	void GuestMenu()
+	{
+		int choice;
+		system("cls");
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |             ::GUEST MENU::             | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # |            1. Make Reservation         | #" << endl;
+		cout << "\t\t\t\t # |            2. Show Details             | #" << endl;
+		cout << "\t\t\t\t # |            3. Food Service             | #" << endl;
+		cout << "\t\t\t\t # |            4. Check Out                | #" << endl;
+		cout << "\t\t\t\t # |            5. Log out                  | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "Enter Your Choice: ";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+		{
+			break;
+		}
+		case 2:
+		{
+			Details();
+			break;
+		}
+		case 3:
+		{
+			break;
+		}
+		case 4:
+		{
+			break;
+		}
+		case 5:
+		{
+			break;
+		}
+		default:
+			break;
+		}
+	
+	
+	
+	}
+
+	void Details()
+	{
+		int choice;
+		system("cls");
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |             ::DETAILS MENU::           | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # |            1. Guest Details            | #" << endl;
+		cout << "\t\t\t\t # |            2. Room Details             | #" << endl;
+		cout << "\t\t\t\t # |            3. Exit                     | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "Enter Your Choice: ";
+		cin >> choice;
+		switch (choice)	
+		{
+		case 1:
+		{
+			int option;
+			cout << "\t\t\t\t **********************************************" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t # |             ::DETAILS MENU::           | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # |            1. Show Details             | #" << endl;
+			cout << "\t\t\t\t # |            2. Update Details           | #" << endl;
+			cout << "\t\t\t\t # |            3. Exit                     | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t **********************************************" << endl;
+			cout << "\t\t\t\t Enter Choice: ";
+			if (option == 1)
+			{
+				displayInfo();
+				break;
+			}
+			else if (option == 2)
+			{
+				updateInfo();
+			}
+
+			break;
+		}
+		default:
+			break;
+		}
+
+
+
+	}
+
+
+
+
 
 	void displayInfo()
 	{
-
+		string temp, line;
+		ifstream rfile;
+		rfile.open("Guest.txt");
+		int count = 1;
+		while (!rfile.eof())
+		{
+			getline(rfile, line);
+			if (!line.length() == 0)
+			{
+				cout << "\t\t\t\t # ========================================== #" << endl;
+				cout << "\t\t\t\t # |               GUEST # " << count << "                 |# " << endl;
+				cout << "\t\t\t\t # ========================================== #" << endl;
+				stringstream ss(line);
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t CNIC: " << temp <<endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Name: " << temp << endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Phone: " << temp << endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Address: " << temp << endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Gender: " << temp << endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Emergency Contact: " << temp << endl;
+				getline(ss, temp, '~');
+				cout << "\t\t\t\t Email Id: " << temp << endl;
+				count++;
+			}
+			cout << endl;
+		}
+		rfile.close();
 	}
 	void setInfo()
 	{
@@ -79,10 +213,12 @@ public:
 	{
 		ofstream file;
 		file.open("Guest.txt", ios::app);
-		file << ReservationID + "~" + cnic + "~" + name + "~" + phone + "~" + address + "~" + gender + "~" + emgContact + "~" + email + check_in << endl;
+		file << cnic + "~" + name + "~" + phone + "~" + address + "~" + gender + "~" + emgContact + "~" + email << endl;
 		cout << "Registration Successful";
 		file.close();
 	}
+	void update_details()
+	{
 
+	}
 };
-int Guest::ReservationID = 1;

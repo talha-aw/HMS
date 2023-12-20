@@ -8,9 +8,8 @@
 #include<iomanip>
 #include<iomanip>
 
-#include"Authentication.h";
-#include"BasicInfo.h";
-
+//#include"Authentication.h";
+#include "MainMenu.h"
 using namespace std;
 string Masterkey = "1234";
 string loggedUser;
@@ -23,9 +22,7 @@ bool isLoggedin = false;
 
 int main()
 {
-	Guest a;
-	a.setInfo();
-	a.Registration();
+	start();
 	/*Authentication a;
 	a.loginMenu();*/
 	return 0;

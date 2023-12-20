@@ -8,6 +8,7 @@
 #include<iomanip>
 #include<chrono>
 #include"Authentication.h"
+#include"BasicInfo.h"
 using namespace std;
 
 void display()
@@ -90,7 +91,14 @@ void menu()
 
 void start()
 {
+	Authentication login;
+	login.loginMenu();
+	
+	/*guest a;
+	a.displayinfo();
+	a.setinfo();
+	a.registration();
 	display();
 	menu();
-	
+	*/
 }

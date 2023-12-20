@@ -147,67 +147,98 @@ public:
 	int loginMenu()
 	{
 		int choice;
-		system("cls");
-		cout << "\t\t\t\t **********************************************" << endl;
-		cout << "\t\t\t\t # ========================================== #" << endl;
-		cout << "\t\t\t\t # |            REGISTRATION FOR            | #" << endl;
-		cout << "\t\t\t\t # |                                        | #" << endl;
-		cout << "\t\t\t\t # |          ::Select From Below::         | #" << endl;
-		cout << "\t\t\t\t # |                                        | #" << endl;
-		cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
-		cout << "\t\t\t\t # |          2. Staff                      | #" << endl;
-		cout << "\t\t\t\t # |          3. Guest                      | #" << endl;
-		cout << "\t\t\t\t # |                                        | #" << endl;
-		cout << "\t\t\t\t # ========================================== #" << endl;
-		cout << "\t\t\t\t **********************************************" << endl;
-		cout << "\t\t\t\t Enter Your Choice: ";
-		cin >> choice;
-		switch (choice)
+		while (true)
 		{
-		case 1:
-		{
-			if (login(choice) == choice)
+
+			system("cls");
+			cout << "\t\t\t\t **********************************************" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t # |            REGISTRATION FOR            | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # |          ::Select From Below::         | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
+			cout << "\t\t\t\t # |          2. Staff                      | #" << endl;
+			cout << "\t\t\t\t # |          3. Guest                      | #" << endl;
+			cout << "\t\t\t\t # |          4. Exit                       | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t **********************************************" << endl;
+			cout << "\t\t\t\t Enter Your Choice: ";
+			cin >> choice;
+			extern bool isLoggedin;
+			switch (choice)
 			{
-				cout << "\t\t\t\t Admin Login Successful";
-				return 1;
-			}
-			else
+			case 1:
 			{
-				cout << "\t\t\t\t Invalid Username or Password";
+				if (login(choice) == choice)
+				{
+					cout << "\t\t\t\t Admin Login Successful";
+					return 1;
+				}
+				else
+				{
+					cout << "\t\t\t\t Invalid Username or Password";
+					Sleep(1000);
+					if (!isLoggedin)
+					{
+						loginMenu();
+						return 1;
+					}
+				}
+				break;
 			}
-			break;
-		}
-		case 2:
-		{
-			if (login(choice) == choice)
+			case 2:
 			{
-				cout << "\t\t\t\t Staff Login Successful";
-				return 2;
+				if (login(choice) == choice)
+				{
+					cout << "\t\t\t\t Staff Login Successful";
+					return 2;
+				}
+				else
+				{
+					cout << "\t\t\t\t Invalid Username or Password";
+					Sleep(1000);
+					if (!isLoggedin)
+					{
+						loginMenu();
+						return 2;
+					}
+				}
+				break;
 			}
-			else
+			case 3:
 			{
-				cout << "\t\t\t\t Invalid Username or Password";
+				if (login(choice) == choice)
+				{
+					cout << "\t\t\t\t Guest Login Successful";
+					return 3;
+				}
+				else
+				{
+					cout << "\t\t\t\t Invalid Username or Password";
+					Sleep(1000);
+					if (!isLoggedin)
+					{
+						loginMenu();
+						return 3;
+					}
+				}
+				break;
 			}
-			break;
-		}
-		case 3:
-		{
-			if (login(choice) == choice)
+			case 4:
 			{
-				cout << "\t\t\t\t Guest Login Successful";
-				return 3;
+				cout << "\t\t\t\t Returning to Main Menu.....";
+				Sleep(1500);
+				return 0;
 			}
-			else
-			{
-				cout << "\t\t\t\t Invalid Username or Password";
+			default:
+				cout << "\t\t\t\t Invalid Choice";
+				Sleep(1000);
+				break;
 			}
-			break;
-		}
-		default:
-			return 0;
-			break;
-		}
 		
+		}
 
 
 	}
