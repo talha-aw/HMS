@@ -5,7 +5,11 @@
 #include<windows.h>
 #include<fstream>
 #include<sstream>
+#include"Admin.h"
+
 using namespace std;
+extern bool isLoggedin;
+
 class Authentication
 {
 
@@ -17,6 +21,7 @@ public:
 	void signup()
 	{
 		int choice;
+		Authentication user;
 		system("cls");
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
@@ -24,9 +29,9 @@ public:
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t Enter User Name: ";
-		getline(cin >> ws, username);
+		getline(cin >> ws, user.username);
 		cout << "\t\t\t\t Enter Password: ";
-		getline(cin >> ws, password);
+		getline(cin >> ws, user.password);
 
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
@@ -50,19 +55,8 @@ public:
 			getline(cin >> ws, key);
 			if (key == Masterkey)
 			{
-				type = 1; //Type 1 is for Admin
-				if (checkExist(type))
-				{
-					cFile(); // Creates new user in file
-				}
-				else
-				{
-					cout << "\t\t\t\t Username already Exist" << endl;
-					cout << "\t\t\t\t Returning to Menu....";
-					Sleep(1000);
-					return;
-				}
-
+				user.type = 1; //Type 1 is for Admin
+				cFile(user); // Creates new user in file
 				break;
 			}
 			else
@@ -75,76 +69,60 @@ public:
 		}
 		case 2:
 		{
-			type = 2; //Type 2 is for Guest
-			if (checkExist(type))
-			{
-				cFile();
-			}
-			else
-			{
-				cout << "\t\t\t\t Username already Exist" << endl;
-				cout << "\t\t\t\t Returning to Menu....";
-				Sleep(1000);
-				return;
-			}
+			user.type = 2; //Type 2 is for Guest
+			cFile(user);
 			break;
 		}
 		
 		default:
 			cout << "\t\t\t\t Invalid Option";
+			exit(0);
 			break;
 		}
 	}
-	void cFile()
+	void cFile(Authentication& user)
 	{
-		ofstream file("User.txt", ios::app);
-		if (file.is_open())
-		{
-			file << username + "~" + password + "~" << type << endl;
-			file.close();
-		}
-		cout << "\t\t\t\t Registration Successful \n\t\t\t\t Press Any Key to Continue......";
-	}
-	bool checkExist(int Type)
-	{
-		string temp, line; // File reading Variables
-		bool isName = false; //Finds user with same name
-		bool isType = false; //Finds user with same type
+		Authentication temp;
+		string  line; // File reading Variables
+		bool isFind = false; //Finds user with same type
 		int TYPE = 0;
-		ifstream rfile("User.txt");
+		ifstream rfile("User.txt", ios::binary);
 		if (rfile.is_open())
 		{
-			while (getline(rfile, line))
+			
+			while(rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 			{
-				if (!line.length() == 0) //Ignores Blank Spaces in File
+				if (user.username == temp.username && user.type == temp.type)
 				{
-					stringstream ss(line);
-					getline(ss, temp, '~');
-					if (temp == username)
-					{
-						isName = true;
-					}
-					getline(ss, temp, '~'); //ignoring this line till ~
-					getline(ss, temp, '~');
-					TYPE = stoi(temp); //Converting string number into Integer
-
-					if (TYPE == type)
-					{
-						isType = true;
-					}
-				}
-				if (isName && isType) //checks if username and type is same or not
-				{
+					isFind = true;
 					rfile.close();
-					return false;
+					break;
 				}
 			}
-			rfile.close();
-
+				rfile.close();
 		}
-		return true;
+
+		if (!isFind)
+		{
+			ofstream file("User.txt", ios::binary | ios::app);
+			if (file.is_open())
+			{
+				file.write(reinterpret_cast<char*>(&user), sizeof(user));
+				file.close();
+			}
+			cout << "\t\t\t\t Registration Successful \n\t\t\t\t Press Any Key to Continue......"<<endl;
+			Sleep(1000);
+		}
+		else
+		{
+			cout << "\t\t\t\t Username already Exist" << endl;
+			cout << "\t\t\t\t Returning to Menu...."<<endl;
+			Sleep(1000);
+		}
+		TEMP();
 	}
-	int loginMenu()
+	
+	void loginMenu()
 	{
 		int choice;
 		while (true)
@@ -166,71 +144,29 @@ public:
 			cout << "\t\t\t\t **********************************************" << endl;
 			cout << "\t\t\t\t Enter Your Choice: ";
 			cin >> choice;
-			extern bool isLoggedin;
 			switch (choice)
 			{
 			case 1:
 			{
-				if (login(choice) == choice)
-				{
-					cout << "\t\t\t\t Admin Login Successful";
-					return 1;
-				}
-				else
-				{
-					cout << "\t\t\t\t Invalid Username or Password";
-					Sleep(1000);
-					if (!isLoggedin)
-					{
-						loginMenu();
-						return 1;
-					}
-				}
+				login(choice);
 				break;
 			}
 			case 2:
 			{
-				if (login(choice) == choice)
-				{
-					cout << "\t\t\t\t Staff Login Successful";
-					return 2;
-				}
-				else
-				{
-					cout << "\t\t\t\t Invalid Username or Password";
-					Sleep(1000);
-					if (!isLoggedin)
-					{
-						loginMenu();
-						return 2;
-					}
-				}
+				login(choice);
 				break;
 			}
 			case 3:
 			{
-				if (login(choice) == choice)
-				{
-					cout << "\t\t\t\t Guest Login Successful";
-					return 3;
-				}
-				else
-				{
-					cout << "\t\t\t\t Invalid Username or Password";
-					Sleep(1000);
-					if (!isLoggedin)
-					{
-						loginMenu();
-						return 3;
-					}
-				}
+				login(choice);
 				break;
 			}
 			case 4:
 			{
 				cout << "\t\t\t\t Returning to Main Menu.....";
 				Sleep(1500);
-				return 0;
+				return;
+				break;
 			}
 			default:
 				cout << "\t\t\t\t Invalid Choice";
@@ -242,7 +178,7 @@ public:
 
 
 	}
-	int login(int usertype)
+	void login(int usertype)
 	{
 		system("cls");
 		cout << "\t\t\t\t **********************************************" << endl;
@@ -250,41 +186,58 @@ public:
 		cout << "\t\t\t\t # |               LOGIN USER               | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		Authentication user,temp;
 		cout << "\t\t\t\t Enter User Name: ";
-		getline(cin >> ws, username);
+		getline(cin >> ws, user.username);
 		cout << "\t\t\t\t Enter Password: ";
-		getline(cin >> ws, password);
+		getline(cin >> ws, user.password);
+		bool isFound = false;
 
-		string temp, line;
-		ifstream rFile;
-		rFile.open("User.txt");
-		if (rFile.is_open())
+		ifstream rfile("User.txt", ios::binary);
+		if (rfile.is_open())
 		{
-			while (!rFile.eof())
+
+			while (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 			{
-				getline(rFile, line);
-				stringstream ss(line);
-				getline(ss, temp, '~');
-				if (temp == username)
+				if (user.username == temp.username && usertype == temp.type)
 				{
-					getline(ss, temp, '~');
-					if (temp == password)
-					{
-						getline(ss, temp, '~');
-						int TYPE = stoi(temp);
-						if (TYPE == usertype)
-						{
-							extern string loggedUser; //Accessing Global Variables
-							extern bool isLoggedin;
-							loggedUser = username; //Assigning values to Global variables
-							isLoggedin = true;
-							return TYPE;
-						}
-					}
+					isLoggedin = true;
+
+					rfile.close();
+					break;
 				}
 			}
+			rfile.close();
 		}
-
+		if (isLoggedin)
+		{
+			if(usertype==1)
+			{
+				cout << "\t\t\t\t Admin Login Successful"<<endl;
+				Sleep(1000);
+			}
+			else if (usertype == 2)
+			{
+				cout << "\t\t\t\t Staff Login Successful" << endl;
+				Sleep(1000);
+			}
+			else if (usertype == 3)
+			{
+				cout << "\t\t\t\t Guest Login Successful" << endl;
+				Sleep(1000);
+			}
+		}
+		else
+		{
+			cout << "\t\t\t\t Invalid Username or Password" << endl;
+			Sleep(1000);
+			if (!isLoggedin)
+			{
+				loginMenu();
+			}
+		}
+		TEMP();
+		
 	}
 
 };

@@ -116,6 +116,7 @@ public:
 			cout << "\t\t\t\t # ========================================== #" << endl;
 			cout << "\t\t\t\t **********************************************" << endl;
 			cout << "\t\t\t\t Enter Choice: ";
+			cin >> option;
 			if (option == 1)
 			{
 				displayInfo();
@@ -123,7 +124,7 @@ public:
 			}
 			else if (option == 2)
 			{
-				updateInfo();
+				//updateInfo();
 			}
 
 			break;

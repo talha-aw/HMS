@@ -6,7 +6,6 @@
 #include<fstream>
 #include<chrono>
 #include<iomanip>
-#include<iomanip>
 
 //#include"Authentication.h";
 #include "MainMenu.h"
@@ -15,7 +14,7 @@ string Masterkey = "1234";
 string loggedUser;
 bool isLoggedin = false;
 
-
+void start();
 
 
 
@@ -24,7 +23,7 @@ int main()
 {
 	start();
 	/*Authentication a;
-	a.loginMenu();*/
+	a.signup();*/
 	return 0;
 }
 
