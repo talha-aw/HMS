@@ -162,6 +162,7 @@ public:
 		}
 		rfile.close();
 		cout << "\t\t\t\t Press Any key to Continue...."<<endl;
+		system("pause");
 		GuestMenu();
 	}
 	void setInfo()
