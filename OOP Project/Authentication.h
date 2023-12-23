@@ -6,7 +6,7 @@
 #include<fstream>
 #include<sstream>
 #include"Admin.h"
-
+#include"BasicInfo.h"
 using namespace std;
 extern bool isLoggedin;
 
@@ -136,8 +136,8 @@ public:
 			cout << "\t\t\t\t # |          ::Select From Below::         | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
-			cout << "\t\t\t\t # |          2. Staff                      | #" << endl;
 			cout << "\t\t\t\t # |          3. Guest                      | #" << endl;
+			cout << "\t\t\t\t # |          2. Staff                      | #" << endl;
 			cout << "\t\t\t\t # |          4. Exit                       | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;
@@ -215,15 +215,19 @@ public:
 			{
 				cout << "\t\t\t\t Admin Login Successful"<<endl;
 				Sleep(1000);
+				
+
 			}
 			else if (usertype == 2)
 			{
-				cout << "\t\t\t\t Staff Login Successful" << endl;
+				cout << "\t\t\t\t Guest Login Successful" << endl;
 				Sleep(1000);
+				Guest gUser;
+				gUser.GuestMenu();
 			}
 			else if (usertype == 3)
 			{
-				cout << "\t\t\t\t Guest Login Successful" << endl;
+				cout << "\t\t\t\t Staff Login Successful" << endl;
 				Sleep(1000);
 			}
 		}

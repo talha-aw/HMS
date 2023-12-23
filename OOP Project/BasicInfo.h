@@ -57,6 +57,11 @@ public:
 		{
 		case 1:
 		{
+			Guest gUser;
+			gUser.setInfo();
+			gUser.Registration(gUser);
+			cout << "Registration Successful..";
+			Sleep(1000);
 			break;
 		}
 		case 2:
@@ -137,44 +142,27 @@ public:
 
 	}
 
-
-
-
-
 	void displayInfo()
 	{
-		string temp, line;
+		Guest temp;
 		ifstream rfile;
-		rfile.open("Guest.txt");
+		rfile.open("Guest.txt",ios::binary);
 		int count = 1;
 		while (!rfile.eof())
 		{
-			getline(rfile, line);
-			if (!line.length() == 0)
-			{
-				cout << "\t\t\t\t # ========================================== #" << endl;
-				cout << "\t\t\t\t # |               GUEST # " << count << "                 |# " << endl;
-				cout << "\t\t\t\t # ========================================== #" << endl;
-				stringstream ss(line);
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t CNIC: " << temp <<endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Name: " << temp << endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Phone: " << temp << endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Address: " << temp << endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Gender: " << temp << endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Emergency Contact: " << temp << endl;
-				getline(ss, temp, '~');
-				cout << "\t\t\t\t Email Id: " << temp << endl;
-				count++;
-			}
+			rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+			cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+			cout << "\t\t\t\t Name: " << temp.name << endl;
+			cout << "\t\t\t\t Phone: " << temp.phone << endl;
+			cout << "\t\t\t\t Address: " << temp.address << endl;
+			cout << "\t\t\t\t Gender: " << temp.gender << endl;
+			cout << "\t\t\t\t Emergency Contact: " << temp.emgContact << endl;
+			cout << "\t\t\t\t Email Id: " << temp.email << endl;
 			cout << endl;
 		}
 		rfile.close();
+		cout << "\t\t\t\t Press Any key to Continue...."<<endl;
+		GuestMenu();
 	}
 	void setInfo()
 	{
@@ -210,12 +198,11 @@ public:
 
 
 
-	void Registration()
+	void Registration(Guest& temp)
 	{
 		ofstream file;
-		file.open("Guest.txt", ios::app);
-		file << cnic + "~" + name + "~" + phone + "~" + address + "~" + gender + "~" + emgContact + "~" + email << endl;
-		cout << "Registration Successful";
+		file.open("Guest.txt", ios::app|ios::binary);
+		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 		file.close();
 	}
 	void update_details()

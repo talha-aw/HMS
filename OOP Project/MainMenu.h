@@ -8,7 +8,7 @@
 #include<sstream>
 #include<iomanip>
 #include<chrono>
-#include"BasicInfo.h"
+//#include"BasicInfo.h"
 #include"Authentication.h"
 using namespace std;
 extern bool isLoggedin;
@@ -88,9 +88,13 @@ void MENU()
 		}
 		case 2:
 		{
+			Authentication user;
 			if (!isLoggedin)
 			{
-				Authentication user;
+				user.loginMenu();
+			}
+			else
+			{
 				user.loginMenu();
 			}
 			break;
