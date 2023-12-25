@@ -26,10 +26,19 @@
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Admin.h">
+    <ClInclude Include="temp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BasicInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rooms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reservation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,7 +5,7 @@
 #include<windows.h>
 #include<fstream>
 #include<sstream>
-#include"Admin.h"
+#include"temp.h"
 #include"BasicInfo.h"
 using namespace std;
 extern bool isLoggedin;
@@ -83,7 +83,6 @@ public:
 	void cFile(Authentication& user)
 	{
 		Authentication temp;
-		string  line; // File reading Variables
 		bool isFind = false; //Finds user with same type
 		int TYPE = 0;
 		ifstream rfile("User.txt", ios::binary);
@@ -136,8 +135,8 @@ public:
 			cout << "\t\t\t\t # |          ::Select From Below::         | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
-			cout << "\t\t\t\t # |          3. Guest                      | #" << endl;
-			cout << "\t\t\t\t # |          2. Staff                      | #" << endl;
+			cout << "\t\t\t\t # |          2. Guest                      | #" << endl;
+			cout << "\t\t\t\t # |          3. Staff                      | #" << endl;
 			cout << "\t\t\t\t # |          4. Exit                       | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;

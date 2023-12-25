@@ -28,6 +28,7 @@ public:
 class Guest :public basicInfo
 {
 private:
+	bool isRegistered;
 	string emgContact;
 	long long int wallet;
 	string check_in;
@@ -148,21 +149,28 @@ public:
 		ifstream rfile;
 		rfile.open("Guest.txt",ios::binary);
 		int count = 1;
-		while (!rfile.eof())
+		if(rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 		{
-			rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-			cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
-			cout << "\t\t\t\t Name: " << temp.name << endl;
-			cout << "\t\t\t\t Phone: " << temp.phone << endl;
-			cout << "\t\t\t\t Address: " << temp.address << endl;
-			cout << "\t\t\t\t Gender: " << temp.gender << endl;
-			cout << "\t\t\t\t Emergency Contact: " << temp.emgContact << endl;
-			cout << "\t\t\t\t Email Id: " << temp.email << endl;
-			cout << endl;
+			if (rfile.is_open())
+			{
+				while (!rfile.eof())
+				{
+					rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+					cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+					cout << "\t\t\t\t Name: " << temp.name << endl;
+					cout << "\t\t\t\t Phone: " << temp.phone << endl;
+					cout << "\t\t\t\t Address: " << temp.address << endl;
+					cout << "\t\t\t\t Gender: " << temp.gender << endl;
+					cout << "\t\t\t\t Emergency Contact: " << temp.emgContact << endl;
+					cout << "\t\t\t\t Email Id: " << temp.email << endl;
+					cout << endl;
+				}
+			}
 		}
 		rfile.close();
+		
 		cout << "\t\t\t\t Press Any key to Continue...."<<endl;
-		system("pause");
+		_getch();
 		GuestMenu();
 	}
 	void setInfo()
@@ -181,7 +189,11 @@ public:
 		getline(cin >> ws, gender);
 		cout << "Enter Emergency Contact: ";
 		getline(cin >> ws, emgContact);
-
+		cout << "Enter Email: ";
+		getline(cin >> ws, email);
+		cout << "Enter Amount in Your Hotel's Wallet: ";
+		cin >> wallet;
+		isRegistered = true;
 
 		////To Store Current Time and Date
 		//auto time = std::chrono::system_clock::now();
