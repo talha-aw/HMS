@@ -16,6 +16,14 @@ private:
 	bool availability;
 	long int price;
 public:
+	void setavailabilitytrue()
+	{
+		availability = true;
+	}
+	void setavailabilityfalse()
+	{
+		availability = false;
+	}
 	string getroomNum()
 	{
 		return roomNum;

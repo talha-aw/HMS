@@ -7,6 +7,7 @@
 #include<sstream>
 #include"temp.h"
 #include"BasicInfo.h"
+#include"Admin.h"
 using namespace std;
 extern bool isLoggedin;
 
@@ -130,14 +131,15 @@ public:
 			system("cls");
 			cout << "\t\t\t\t **********************************************" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;
-			cout << "\t\t\t\t # |            REGISTRATION FOR            | #" << endl;
+			cout << "\t\t\t\t # |                LOGIN FOR               | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # |          ::Select From Below::         | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # |          1. Admin                      | #" << endl;
 			cout << "\t\t\t\t # |          2. Guest                      | #" << endl;
 			cout << "\t\t\t\t # |          3. Staff                      | #" << endl;
-			cout << "\t\t\t\t # |          4. Exit                       | #" << endl;
+			cout << "\t\t\t\t # |          4. Manager                    | #" << endl;
+			cout << "\t\t\t\t # |          5. Exit                       | #" << endl;
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;
 			cout << "\t\t\t\t **********************************************" << endl;
@@ -157,10 +159,15 @@ public:
 			}
 			case 3:
 			{
-				login(choice);
+				loginStaff();
 				break;
 			}
 			case 4:
+			{
+				loginManager();
+				break;
+			}
+			case 5:
 			{
 				cout << "\t\t\t\t Returning to Main Menu.....";
 				Sleep(1500);
@@ -198,12 +205,14 @@ public:
 
 			while (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 			{
-				if (user.username == temp.username && usertype == temp.type)
+				if (user.username == temp.username && user.password == temp.password)
 				{
-					isLoggedin = true;
-
-					rfile.close();
-					break;
+					if (usertype == temp.type)
+					{
+						isLoggedin = true;
+						rfile.close();
+						break;
+					}
 				}
 			}
 			rfile.close();
@@ -213,6 +222,7 @@ public:
 			if(usertype==1)
 			{
 				cout << "\t\t\t\t Admin Login Successful"<<endl;
+				AdminMenu();
 				Sleep(1000);
 				
 
@@ -224,11 +234,6 @@ public:
 				Guest gUser;
 				gUser.GuestMenu();
 			}
-			else if (usertype == 3)
-			{
-				cout << "\t\t\t\t Staff Login Successful" << endl;
-				Sleep(1000);
-			}
 		}
 		else
 		{
@@ -239,9 +244,110 @@ public:
 				loginMenu();
 			}
 		}
-		TEMP();
+		
 		
 	}
+	void loginStaff()
+	{
+		system("cls");
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |               LOGIN STAFF              | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+		Authentication user;
+		cout << "\t\t\t\t Enter User Name: ";
+		getline(cin >> ws, user.username);
+		cout << "\t\t\t\t Enter Password: ";
+		getline(cin >> ws, user.password);
+		bool isFound = false;
+		Staff temp;
+		ifstream rfile("Manager.txt", ios::binary);
+		if (rfile.is_open())
+		{
 
+			while (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+			{
+				if (user.username == temp.getstaffId() && user.password == temp.getpassword())
+				{
+					isLoggedin = true;
+					rfile.close();
+					break;
+				}
+				else
+				{
+					cout << "\t\t\t\t Invalid Username or Password" << endl;
+					Sleep(1000);
+					if (!isLoggedin)
+					{
+						loginMenu();
+					}
+				}
+			}
+			rfile.close();
+		}
+		if (isLoggedin)
+		{
+			cout << "\t\t\t\t Staff Login Successful" << endl;
+			Sleep(1000);
+			staffMenu();
+		}
+		else
+		{
+			TEMP();
+		}
+	}
+
+
+	void loginManager()
+	{
+		system("cls");
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |               LOGIN MANAGER            | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+		Authentication user;
+		cout << "\t\t\t\t Enter User Name: ";
+		getline(cin >> ws, user.username);
+		cout << "\t\t\t\t Enter Password: ";
+		getline(cin >> ws, user.password);
+		bool isFound = false;
+		Manager temp;
+		ifstream rfile("Manager.txt", ios::binary);
+		if (rfile.is_open())
+		{
+
+			while (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+			{
+				if (user.username == temp.getManId() && user.password == temp.getpassword())
+				{
+						isLoggedin = true;
+						rfile.close();
+						break;
+				}
+				else
+				{
+					cout << "\t\t\t\t Invalid Username or Password" << endl;
+					Sleep(1000);
+					if (!isLoggedin)
+					{
+						loginMenu();
+					}
+				}
+			}
+			rfile.close();
+		}
+		if (isLoggedin)
+		{
+				cout << "\t\t\t\t Manager Login Successful" << endl;
+				Sleep(1000);
+				managerMenu();
+		}
+		else
+		{
+			TEMP();
+		}
+	}
 };
 

@@ -9,13 +9,13 @@
 #include "BasicInfo.h"
 #include "Rooms.h"
 extern string loggedUser;
-class Reservation :public Guest,public Room 
+class Reservation :public Guest, public Room
 {
 private:
 	int type;
 	int size;
 	bool service;
-	
+
 public:
 	void makeReservation()
 	{
@@ -34,37 +34,45 @@ public:
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "Enter Your Choice: ";
-		cin >> choice;
-		switch (choice)
+		if (cin >> choice)
 		{
-		case 1:
-		{
-			Guest gUser;
-			gUser.setInfo();
-			gUser.Registration(gUser);
-			cout << "Registration Successful..";
-			Sleep(1000);
-			break;
+
+			switch (choice)
+			{
+			case 1:
+			{
+				Guest gUser;
+				gUser.setInfo();
+				gUser.Registration(gUser);
+				cout << "Registration Successful..";
+				Sleep(1000);
+				break;
+			}
+			case 2:
+			{
+				bookRoom();
+				break;
+			}
+			case 3:
+			{
+				break;
+			}
+			case 4:
+			{
+				break;
+			}
+			case 5:
+			{
+				break;
+			}
+			default:
+				break;
+			}
 		}
-		case 2:
+		else
 		{
-			bookRoom();
-			break;
-		}
-		case 3:
-		{
-			break;
-		}
-		case 4:
-		{
-			break;
-		}
-		case 5:
-		{
-			break;
-		}
-		default:
-			break;
+			cout << "\t\t\t\t Enter Integer...";
+			system("pause");
 		}
 	}
 
@@ -96,7 +104,8 @@ public:
 		}
 
 		Room temp;
-		ifstream rfile("Room.txt", ios::binary);
+		int size=sizeof(temp);
+		fstream rfile("Room.txt", ios::binary|ios::in, ios::out);
 		if (rfile.is_open())
 		{
 			while (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
@@ -119,6 +128,10 @@ public:
 						cout << "\t\t\t\t Family"<<endl;
 					}
 					//Update Room availability Status
+					
+					rfile.seekp(-size,ios::cur);
+					temp.setavailabilityfalse();
+					rfile.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 					break;
 				}
 			}

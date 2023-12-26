@@ -7,8 +7,14 @@
 #include<fstream>
 #include<sstream>
 #include"Rooms.h"
+//#include"BasicInfo.h"
 void roomMenu();
 void addRoom();
+void addManager();
+void addStaff();
+void staffMenu();
+void managerMenu();
+
 using namespace std;
 
 void AdminMenu()
@@ -33,6 +39,7 @@ void AdminMenu()
 	{
 	case 1:
 	{
+		managerMenu();
 	/*	Guest gUser;
 		gUser.setInfo();
 		gUser.Registration(gUser);
@@ -47,6 +54,7 @@ void AdminMenu()
 	}
 	case 3:
 	{
+		staffMenu();
 		break;
 	}
 	case 4:
@@ -64,6 +72,154 @@ void AdminMenu()
 
 
 }
+
+
+void staffMenu()
+{
+	int choice = 0;
+	system("cls");
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t # |             ::STAFF MENU::             | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # |            1. Add Staff                | #" << endl;
+	cout << "\t\t\t\t # |            2. Delete Staff             | #" << endl;
+	cout << "\t\t\t\t # |            3. Update Staff             | #" << endl;
+	cout << "\t\t\t\t # |            4. Show Staff               | #" << endl;
+	cout << "\t\t\t\t # |            5. Exit                     | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "Enter Your Choice: ";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		addStaff();
+		break;
+	}
+	case 3:
+	{
+		Staff user;
+		user.updateinfo();
+		break;
+	}
+	case 4:
+	{
+		Staff user;
+		user.displayInfo();
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void addStaff()
+{
+	Staff user;
+	cout << "Enter Name: ";
+	getline(cin >> ws, user.name);
+	cout << "Enter Age: ";
+	cin >> user.age;
+	cout << "Enter CNIC: ";
+	getline(cin >> ws, user.cnic);
+	cout << "Enter Phone Number: ";
+	getline(cin >> ws, user.phone);
+	cout << "Enter Address: ";
+	getline(cin >> ws, user.address);
+	cout << "Enter Gender: ";
+	getline(cin >> ws, user.gender);
+	cout << "Enter Staff Role: \n";
+	getline(cin >> ws, user.Role);
+	cout << "Enter the salary: ";
+	user.Salary = 50000;
+	cout << "Enter the shift:(Morning/Night) ";
+	getline(cin >> ws, user.Shift);
+	cout << "Enter Staff Id: ";
+	getline(cin >> ws, user.staffId);
+	cout << "Enter Password: ";
+	getline(cin >> ws, user.password);
+
+	user.Registration(user);
+}
+
+
+
+
+
+void managerMenu()
+{
+	int choice = 0;
+	system("cls");
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t # |             ::ROOM MENU::              | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # |            1. Add Manager              | #" << endl;
+	cout << "\t\t\t\t # |            2. Delete Manager           | #" << endl;
+	cout << "\t\t\t\t # |            3. Update Manager Details   | #" << endl;
+	cout << "\t\t\t\t # |            4. Show Manager             | #" << endl;
+	cout << "\t\t\t\t # |            5. Exit                     | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "Enter Your Choice: ";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		addManager();
+		break;
+	}
+	case 3:
+	{
+		Manager user;
+		user.updateinfo();
+		break;
+	}
+	case 4:
+	{
+		Manager user;
+		user.displayInfo();
+		break;
+
+	}
+	default:
+		break;
+	}
+
+
+}
+void addManager()
+{
+	Manager user;
+	cout << "Enter Name: ";
+	getline(cin >> ws, user.name);
+	cout << "Enter Age: ";
+	cin >> user.age;
+	cout << "Enter CNIC: ";
+	getline(cin >> ws, user.cnic);
+	cout << "Enter Phone Number: ";
+	getline(cin >> ws, user.phone);
+	cout << "Enter Address: ";
+	getline(cin >> ws, user.address);
+	cout << "Enter Gender: ";
+	getline(cin >> ws, user.gender);
+	cout << "Enter the Salary: ";
+	user.Salary=300000;
+	cout << "Enter Manager Id: ";
+	getline(cin >>ws,user.ManId);
+	cout << "Enter Password: ";
+	cin >> user.password;
+	
+	user.Registration(user);
+}
+
+
+
 
 
 

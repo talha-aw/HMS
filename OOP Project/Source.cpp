@@ -7,10 +7,11 @@
 #include<chrono>
 #include<iomanip>
 //#include"Admin.h";
-#include"Reservation.h";
+//#include"Reservation.h";
 
 //#include"Authentication.h";
-//#include "MainMenu.h"
+
+#include "MainMenu.h"
 using namespace std;
 string Masterkey = "1234";
 string loggedUser;
@@ -23,12 +24,14 @@ void start();
 
 int main()
 {
-	Reservation a;
-	a.makeReservation();
+	/*Reservation a;
+	a.makeReservation();*/
 	//start();
+	//addManager();
+
 	//addRoom();
-	/*Authentication a;
-	a.signup();*/
+	Authentication a;
+	a.loginMenu();
 	return 0;
 }
 
