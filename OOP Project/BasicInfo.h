@@ -8,6 +8,16 @@
 #include<chrono>
 #include<iomanip>
 using namespace std;
+extern bool isAdmin;
+extern bool isLoggedin;
+extern string loggedUser;
+void managerMenu();
+void AmanagerMenu();
+void AstaffMenu();
+void staffMenu();
+
+
+
 
 
 class basicInfo //Abstract class
@@ -23,6 +33,7 @@ protected:
 public:
 	virtual void displayInfo() = 0; // Pure virtual function
 	virtual void setInfo() {}; //virtual
+	virtual void updateInfo() {};
 };
 
 class Guest :public basicInfo
@@ -34,11 +45,12 @@ private:
 	string check_in;
 	string check_out;
 	long int ReservationID;
-
+	long double bill;
 public:
 	void GuestMenu()
 	{
-		int choice;
+		start:
+		int choice=0;
 		system("cls");
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
@@ -63,6 +75,7 @@ public:
 			gUser.Registration(gUser);
 			cout << "Registration Successful..";
 			Sleep(1000);
+			goto start;
 			break;
 		}
 		case 2:
@@ -80,14 +93,14 @@ public:
 		}
 		case 5:
 		{
+			isLoggedin = false;
+			loggedUser.clear();
+			MENU();
 			break;
 		}
 		default:
 			break;
 		}
-	
-	
-	
 	}
 
 	void Details()
@@ -130,9 +143,19 @@ public:
 			}
 			else if (option == 2)
 			{
-				//updateInfo();
+				updateInfo();
+			}
+			else if (option == 3)
+			{
+				cout << "Returning to Guest Menu....";
+				Sleep(1000);
+				GuestMenu();
 			}
 
+			break;
+		}
+		case 2:
+		{
 			break;
 		}
 		default:
@@ -142,11 +165,11 @@ public:
 
 
 	}
-
 	void displayInfo()
 	{
 		Guest temp;
 		ifstream rfile;
+		int count = 0;
 		rfile.open("Guest.txt",ios::binary);
 		if(rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 		{
@@ -154,7 +177,6 @@ public:
 			{
 				while (!rfile.eof())
 				{
-					rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 					cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
 					cout << "\t\t\t\t Name: " << temp.name << endl;
 					cout << "\t\t\t\t Phone: " << temp.phone << endl;
@@ -163,6 +185,7 @@ public:
 					cout << "\t\t\t\t Emergency Contact: " << temp.emgContact << endl;
 					cout << "\t\t\t\t Email Id: " << temp.email << endl;
 					cout << endl;
+					rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 				}
 			}
 		}
@@ -171,6 +194,50 @@ public:
 		_getch();
 		GuestMenu();
 	}
+	void updateInfo()
+	{
+		Guest user, temp;
+		cout << "Enter CNIC you want to update: ";
+		getline(cin >> ws, user.cnic);
+		int size = sizeof(temp);
+		fstream in_out_file("Guest.txt", ios::binary | ios::in|ios::out);
+		if (in_out_file.is_open())
+		{
+			while (in_out_file.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+			{
+				if (temp.cnic == user.cnic)
+				{
+					cout << "Enter Updated Name: ";
+					getline(cin >> ws, user.name);
+					cout << "Enter Updated Age: ";
+					cin >> user.age;
+					cout << "Enter Updated Phone Number: ";
+					getline(cin >> ws, user.phone);
+					cout << "Enter Updated Address: ";
+					getline(cin >> ws, user.address);
+					cout << "Enter Updated Gender: ";
+					getline(cin >> ws, user.gender);
+					cout << "Enter Updated Emergency Contact: ";
+					getline(cin >> ws, user.emgContact);
+					cout << "Enter Updated Email: ";
+					getline(cin >> ws, user.email);
+					cout << "Enter Updated Amount in Your Hotel's Wallet: ";
+					cin >> user.wallet;
+					isRegistered = true;
+
+					in_out_file.seekp(-size, ios::cur);
+					in_out_file.write(reinterpret_cast<char*>(&user), sizeof(user));
+					in_out_file.close();
+					cout << "\t\t\t\t Guest info Updated Successfully";
+					_getch();
+				}
+			}
+
+		}
+
+	}
+	
+
 	void setInfo()
 	{
 		cout << "Enter Name: ";
@@ -216,11 +283,12 @@ public:
 		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 		file.close();
 	}
-	void update_details()
-	{
-
-	}
+	
 };
+
+
+
+
 
 class Staff :public basicInfo {
 private:
@@ -230,6 +298,7 @@ private:
 	string Shift;
 	string password;
 	friend void addStaff();
+	friend void delStaff();
 public:
 	string getstaffId()
 	{
@@ -239,7 +308,15 @@ public:
 	{
 		return password;
 	}
-
+	void Registration(Staff& temp)
+	{
+		ofstream file;
+		file.open("Staff.txt", ios::app | ios::binary);
+		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
+		file.close();
+		AstaffMenu();
+	}
+	
 	void displayInfo()
 	{
 		Staff temp;
@@ -249,34 +326,58 @@ public:
 		{
 			if (rfile.is_open())
 			{
-				while (!rfile.eof())
+				if (isAdmin)
 				{
-					rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-					cout << "\t\t\t\t Id: " << temp.staffId << endl;
-					cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
-					cout << "\t\t\t\t Name: " << temp.name << endl;
-					cout << "\t\t\t\t Phone: " << temp.phone << endl;
-					cout << "\t\t\t\t Address: " << temp.address << endl;
-					cout << "\t\t\t\t Gender: " << temp.gender << endl;
-					cout << "\t\t\t\t Role: " << temp.Role << endl;
-					cout << "\t\t\t\t Salary: " << temp.Salary << endl;
-					cout << "\t\t\t\t Shift: " << temp.Shift << endl;
+					while (!rfile.eof())
+					{
+						cout << "\t\t\t\t Id: " << temp.staffId << endl;
+						cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+						cout << "\t\t\t\t Name: " << temp.name << endl;
+						cout << "\t\t\t\t Phone: " << temp.phone << endl;
+						cout << "\t\t\t\t Address: " << temp.address << endl;
+						cout << "\t\t\t\t Gender: " << temp.gender << endl;
+						cout << "\t\t\t\t Role: " << temp.Role << endl;
+						cout << "\t\t\t\t Salary: " << temp.Salary << endl;
+						cout << "\t\t\t\t Shift: " << temp.Shift << endl;
+						rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+					}
+				}
+				else
+				{
+
+					while (!rfile.eof())
+					{
+						if(temp.staffId==loggedUser)
+						{
+
+							cout << "\t\t\t\t Id: " << temp.staffId << endl;
+							cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+							cout << "\t\t\t\t Name: " << temp.name << endl;
+							cout << "\t\t\t\t Phone: " << temp.phone << endl;
+							cout << "\t\t\t\t Address: " << temp.address << endl;
+							cout << "\t\t\t\t Gender: " << temp.gender << endl;
+							cout << "\t\t\t\t Role: " << temp.Role << endl;
+							cout << "\t\t\t\t Salary: " << temp.Salary << endl;
+							cout << "\t\t\t\t Shift: " << temp.Shift << endl;
+							break;
+						}
+						else
+						{
+							rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+						}
+					}
 				}
 			}
 		}
 		rfile.close();
 		cout << "\t\t\t\t Press Any key to Continue...." << endl;
-		system("pause");
+		_getch();
+		if (isAdmin)
+			AstaffMenu();
+		else
+			staffMenu();
 	}
-	void Registration(Staff& temp)
-	{
-		ofstream file;
-		file.open("Staff.txt", ios::app | ios::binary);
-		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
-		file.close();
-	}
-
-	void updateinfo()
+	void updateInfo()
 	{
 		Staff user, temp;
 		int size = sizeof(temp);
@@ -285,44 +386,61 @@ public:
 		getline(cin >> ws, user.staffId);
 		if (file.is_open())
 		{
-			file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-			if (temp.staffId == user.staffId)
+			while (file.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 			{
-				cout << "Enter Updated Name: ";
-				getline(cin >> ws, user.name);
-				cout << "Enter Updated Age: ";
-				cin >> user.age;
-				cout << "Enter Updated CNIC: ";
-				getline(cin >> ws, user.cnic);
-				cout << "Enter Updated Phone Number: ";
-				getline(cin >> ws, user.phone);
-				cout << "Enter Updated Address: ";
-				getline(cin >> ws, user.address);
-				cout << "Enter Updated Gender: ";
-				getline(cin >> ws, user.gender);
-				cout << "Enter Updated Role: ";
-				getline(cin >> ws, user.Role);
-				cout << "Enter Updated Shift: ";
-				getline(cin >> ws, user.Shift);
-				cout << "Enter Updated Password: ";
-				getline(cin >> ws, user.password);
+				if (temp.staffId == user.staffId)
+				{
+					cout << "Enter Updated Name: ";
+					getline(cin >> ws, user.name);
+					cout << "Enter Updated Age: ";
+					cin >> user.age;
+					cout << "Enter Updated CNIC: ";
+					getline(cin >> ws, user.cnic);
+					cout << "Enter Updated Phone Number: ";
+					getline(cin >> ws, user.phone);
+					cout << "Enter Updated Address: ";
+					getline(cin >> ws, user.address);
+					cout << "Enter Updated Gender: ";
+					getline(cin >> ws, user.gender);
+					cout << "Enter Updated Role: ";
+					getline(cin >> ws, user.Role);
+					cout << "Enter Updated Shift: ";
+					getline(cin >> ws, user.Shift);
+					cout << "Enter Updated Password: ";
+					getline(cin >> ws, user.password);
 
-				user.Salary = 50000;
-				file.seekp(-size, ios::cur);
-				file.write(reinterpret_cast<char*>(&user), sizeof(user));
-				file.close();
-				cout << "\t\t\t\t Staff info Updated Successfully";
-				_getch();
+					user.Salary = 50000;
+					file.seekp(-size, ios::cur);
+					file.write(reinterpret_cast<char*>(&user), sizeof(user));
+					file.close();
+					cout << "\t\t\t\t Staff info Updated Successfully";
+					_getch();
+				}
 			}
+
 		}
+		if (isAdmin)
+			AstaffMenu();
+		else
+			staffMenu();
 	}
 };
+
+
+
+
+
+
+
+
 class Manager :public basicInfo {
 private:
 	string ManId;
 	double Salary;
 	string password;
 public:
+	friend void addManager();
+	friend void delManager();
 	string getManId()
 	{
 		return ManId;
@@ -331,40 +449,6 @@ public:
 	{
 		return password;
 	}
-
-	friend void addManager();
-	
-	void displayInfo()
-	{
-		Manager temp;
-		ifstream rfile;
-		rfile.open("Manager.txt", ios::binary);
-
-
-		if (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
-		{
-			if (rfile.is_open())
-			{
-				while (!rfile.eof())
-				{
-					rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-					cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
-					cout << "\t\t\t\t Name: " << temp.name << endl;
-					cout << "\t\t\t\t Phone: " << temp.phone << endl;
-					cout << "\t\t\t\t Address: " << temp.address << endl;
-					cout << "\t\t\t\t Gender: " << temp.gender << endl;
-					cout << "\t\t\t\t Id: " << temp.ManId << endl;
-					cout << "\t\t\t\t Salary: " << temp.Salary << endl;
-				}
-			
-			}
-
-		}
-				rfile.close();
-				cout << "\t\t\t\t Press Any key to Continue...." << endl;
-				_getch();
-		//managerMenu();
-	}
 	void Registration(Manager& temp)
 	{
 		ofstream file;
@@ -372,9 +456,68 @@ public:
 		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 		file.close();
 		cout << "Registration Successful..";
+		Sleep(1000);
+		AmanagerMenu();
 	}
 
-	void updateinfo()
+	void displayInfo()
+	{
+		Manager temp;
+		ifstream rfile;
+		rfile.open("Manager.txt", ios::binary);
+		if (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+		{
+			if (rfile.is_open())
+			{
+				if (isAdmin)
+				{
+					while (!rfile.eof())
+					{
+						cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+						cout << "\t\t\t\t Name: " << temp.name << endl;
+						cout << "\t\t\t\t Phone: " << temp.phone << endl;
+						cout << "\t\t\t\t Address: " << temp.address << endl;
+						cout << "\t\t\t\t Gender: " << temp.gender << endl;
+						cout << "\t\t\t\t Id: " << temp.ManId << endl;
+						cout << "\t\t\t\t Salary: " << temp.Salary << endl;
+						rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+					}
+				}
+			else
+			{
+
+				while (!rfile.eof())
+				{
+					if (temp.ManId == loggedUser)
+					{
+						cout << "\t\t\t\t CNIC: " << temp.cnic << endl;
+						cout << "\t\t\t\t Name: " << temp.name << endl;
+						cout << "\t\t\t\t Phone: " << temp.phone << endl;
+						cout << "\t\t\t\t Address: " << temp.address << endl;
+						cout << "\t\t\t\t Gender: " << temp.gender << endl;
+						cout << "\t\t\t\t Id: " << temp.ManId << endl;
+						cout << "\t\t\t\t Salary: " << temp.Salary << endl;
+						break;
+					}
+					else
+					{
+						rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+					}
+				}
+			}
+			
+			}
+
+		}
+				rfile.close();
+				cout << "\t\t\t\t Press Any key to Continue...." << endl;
+				_getch();
+				if (isAdmin)
+					AmanagerMenu();
+				else
+					managerMenu();
+	}
+	void updateInfo()
 	{
 		Manager user, temp;
 		int size = sizeof(temp);
@@ -383,33 +526,37 @@ public:
 		getline(cin >> ws, user.ManId);
 		if (file.is_open())
 		{
-			file.read(reinterpret_cast<char*>(&temp), sizeof(temp));
-			if (temp.ManId == user.ManId)
+			while (file.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 			{
-				cout << "Enter Updated Name: ";
-				getline(cin >> ws, user.name);
-				cout << "Enter Updated Age: ";
-				cin >> user.age;
-				cout << "Enter Updated CNIC: ";
-				getline(cin >> ws, user.cnic);
-				cout << "Enter Updated Phone Number: ";
-				getline(cin >> ws, user.phone);
-				cout << "Enter Updated Address: ";
-				getline(cin >> ws, user.address);
-				cout << "Enter Updated Gender: ";
-				getline(cin >> ws, user.gender);
-				cout << "Enter Updated Password: ";
-				getline(cin>>ws, user.password);
-				user.Salary = 300000;
-				file.seekp(-size,ios::cur);
-				file.write(reinterpret_cast<char*>(&user), sizeof(user));
-				file.close();
-				cout << "\t\t\t\t Manager info Updated Successfully";
-				_getch();
+				if (temp.ManId == user.ManId)
+				{
+					cout << "Enter Updated Name: ";
+					getline(cin >> ws, user.name);
+					cout << "Enter Updated Age: ";
+					cin >> user.age;
+					cout << "Enter Updated CNIC: ";
+					getline(cin >> ws, user.cnic);
+					cout << "Enter Updated Phone Number: ";
+					getline(cin >> ws, user.phone);
+					cout << "Enter Updated Address: ";
+					getline(cin >> ws, user.address);
+					cout << "Enter Updated Gender: ";
+					getline(cin >> ws, user.gender);
+					cout << "Enter Updated Password: ";
+					getline(cin>>ws, user.password);
+					user.Salary = 300000;
+					file.seekp(-size,ios::cur);
+					file.write(reinterpret_cast<char*>(&user), sizeof(user));
+					file.close();
+					cout << "\t\t\t\t Manager info Updated Successfully";
+					_getch();
+				}
 			}
 		}
-
+		if (isAdmin)
+			AmanagerMenu();
+		else
+			managerMenu();
 	}
-
 
 };

@@ -12,11 +12,14 @@ void roomMenu();
 void addRoom();
 void addManager();
 void addStaff();
-void staffMenu();
+void delStaff();
+void delManager();
+void AstaffMenu();
+void AmanagerMenu();
 void managerMenu();
 
 using namespace std;
-
+extern bool isLoggedin;
 void AdminMenu()
 {
 	int choice;
@@ -39,7 +42,7 @@ void AdminMenu()
 	{
 	case 1:
 	{
-		managerMenu();
+		AmanagerMenu();
 	/*	Guest gUser;
 		gUser.setInfo();
 		gUser.Registration(gUser);
@@ -54,7 +57,7 @@ void AdminMenu()
 	}
 	case 3:
 	{
-		staffMenu();
+		AstaffMenu();
 		break;
 	}
 	case 4:
@@ -63,6 +66,10 @@ void AdminMenu()
 	}
 	case 5:
 	{
+		isLoggedin = false;
+		isAdmin = false;
+		loggedUser.clear();
+		MENU();
 		break;
 	}
 	default:
@@ -74,8 +81,9 @@ void AdminMenu()
 }
 
 
-void staffMenu()
+void AstaffMenu()
 {
+	Staff user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -99,16 +107,26 @@ void staffMenu()
 		addStaff();
 		break;
 	}
+	case 2:
+	{
+		delStaff();
+		break;
+	}
 	case 3:
 	{
-		Staff user;
-		user.updateinfo();
+		user.updateInfo();
 		break;
 	}
 	case 4:
 	{
-		Staff user;
 		user.displayInfo();
+		break;
+	}
+	case 5:
+	{
+		cout << "\t\t\t\t Returning to Admin Menu....";
+		Sleep(1000);
+		AdminMenu();
 		break;
 	}
 	default:
@@ -145,12 +163,56 @@ void addStaff()
 	user.Registration(user);
 }
 
-
-
-
-
-void managerMenu()
+void delStaff()
 {
+	Staff user;
+	bool found = false;
+	string staffid;
+	cout << "\t\t\t\t Enter Staff ID:";
+	getline(cin>>ws, staffid);
+	
+	ifstream infile;
+	infile.open("Staff.txt", ios::binary);
+	ofstream outfile("tempStaff.txt", ios::binary | ios::app);
+
+	if (infile.is_open() && outfile.is_open()) {
+		while (infile.read(reinterpret_cast<char*>(&user), sizeof(user))) 
+		{
+			if (user.staffId != staffid) 
+			{
+				outfile.write(reinterpret_cast<char*>(&user), sizeof(user));
+			}
+			else {
+				found = true;
+			}
+
+		}
+
+		if (!found) {
+			cout << "\n\n\t\tRecord not found" << endl;
+		}
+		else {
+			cout << "\n\n\t\tRecord Deleted Successfully!\n";
+		}
+		infile.close();
+		outfile.close();
+		remove("Staff.txt");
+		rename("tempStaff.txt","Staff.txt");
+	}
+	else {
+		cout << "\n\n\t\tFile doesn't exist";
+	}
+	cout << "press any key to continue!";
+	_getch();
+	AstaffMenu();
+}
+
+
+
+
+void AmanagerMenu()
+{
+	Manager user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -174,18 +236,27 @@ void managerMenu()
 		addManager();
 		break;
 	}
+	case 2:
+	{
+		delManager();
+		break;
+	}
 	case 3:
 	{
-		Manager user;
-		user.updateinfo();
+		user.updateInfo();
 		break;
 	}
 	case 4:
 	{
-		Manager user;
 		user.displayInfo();
 		break;
 
+	}
+	case 5:
+	{
+		cout << "\t\t\t\t Returning to Menu...";
+		Sleep(1000);
+		AdminMenu();
 	}
 	default:
 		break;
@@ -217,7 +288,53 @@ void addManager()
 	
 	user.Registration(user);
 }
+void delManager()
+{
+	Manager user;
+	bool found = false;
+	string Manid;
+	cout << "\t\t\t\t Enter Staff ID:";
+	getline(cin >> ws, Manid);
 
+	ifstream infile;
+	infile.open("Manager.txt", ios::binary);
+	ofstream outfile("tempManager.txt", ios::binary | ios::app);
+
+	if (infile.is_open() && outfile.is_open()) {
+		while (infile.read(reinterpret_cast<char*>(&user), sizeof(user)))
+		{
+			if (user.ManId != Manid)
+			{
+				outfile.write(reinterpret_cast<char*>(&user), sizeof(user));
+			}
+			else {
+				found = true;
+			}
+
+		}
+
+		if (!found) {
+			cout << "\n\n\t\tRecord not found" << endl;
+		}
+		else {
+			cout << "\n\n\t\tRecord Deleted Successfully!\n";
+		}
+		infile.close();
+		outfile.close();
+		remove("Manager.txt");
+		rename("tempManager.txt", "Manager.txt");
+
+	}
+	else {
+		cout << "\n\n\t\tFile doesn't exist";
+	}
+	cout << "press any key to continue!";
+	_getch();
+	if (isAdmin)
+		AstaffMenu();
+	else
+		staffMenu();
+}
 
 
 
@@ -226,6 +343,7 @@ void addManager()
 
 void roomMenu()
 {
+	Room room;
 	int choice=0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -247,6 +365,11 @@ void roomMenu()
 	case 1:
 	{
 		addRoom();
+		break;
+	}
+	case 4:
+	{
+		room.displayRoom();
 		break;
 	}
 	default:

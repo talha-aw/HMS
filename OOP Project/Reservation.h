@@ -19,7 +19,7 @@ private:
 public:
 	void makeReservation()
 	{
-		int choice;
+		int choice=0;
 		system("cls");
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;

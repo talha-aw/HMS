@@ -67,7 +67,7 @@ void MENU()
 		cout << "\t\t\t\t # |            5. Exit                     | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
-		int choice;
+		int choice=0;
 		cout << "\t\t\t\t Enter Choice";
 		cin >> choice;
 		switch (choice)
@@ -112,8 +112,8 @@ void MENU()
 		case 5:
 		{
 			display();
-			cout << "\t\t\t\t\t\t GoodBye!";
-			Sleep(1000);
+			cout << "\t\t\t\t\t\t    WAYNE MANOR since 1989  ";
+			Sleep(2000);
 			exit(0);
 		}
 		default:
@@ -127,10 +127,3 @@ void MENU()
 }
 
 
-void start()
-{
-
-	MENU();
-	
-	
-}

@@ -10,7 +10,8 @@
 #include"Admin.h"
 using namespace std;
 extern bool isLoggedin;
-
+extern bool isAdmin;
+void staffMenu();
 class Authentication
 {
 
@@ -222,6 +223,7 @@ public:
 			if(usertype==1)
 			{
 				cout << "\t\t\t\t Admin Login Successful"<<endl;
+				isAdmin = true;
 				AdminMenu();
 				Sleep(1000);
 				
@@ -262,7 +264,7 @@ public:
 		getline(cin >> ws, user.password);
 		bool isFound = false;
 		Staff temp;
-		ifstream rfile("Manager.txt", ios::binary);
+		ifstream rfile("Staff.txt", ios::binary);
 		if (rfile.is_open())
 		{
 
@@ -271,18 +273,11 @@ public:
 				if (user.username == temp.getstaffId() && user.password == temp.getpassword())
 				{
 					isLoggedin = true;
+					loggedUser = user.username;
 					rfile.close();
 					break;
 				}
-				else
-				{
-					cout << "\t\t\t\t Invalid Username or Password" << endl;
-					Sleep(1000);
-					if (!isLoggedin)
-					{
-						loginMenu();
-					}
-				}
+				
 			}
 			rfile.close();
 		}
@@ -294,8 +289,14 @@ public:
 		}
 		else
 		{
-			TEMP();
+			cout << "\t\t\t\t Invalid Username or Password" << endl;
+			Sleep(1000);
+			if (!isLoggedin)
+			{
+				loginMenu();
+			}
 		}
+		
 	}
 
 
@@ -323,18 +324,11 @@ public:
 				if (user.username == temp.getManId() && user.password == temp.getpassword())
 				{
 						isLoggedin = true;
+						loggedUser = user.username;
 						rfile.close();
 						break;
 				}
-				else
-				{
-					cout << "\t\t\t\t Invalid Username or Password" << endl;
-					Sleep(1000);
-					if (!isLoggedin)
-					{
-						loginMenu();
-					}
-				}
+				
 			}
 			rfile.close();
 		}
@@ -346,8 +340,105 @@ public:
 		}
 		else
 		{
-			TEMP();
+			cout << "\t\t\t\t Invalid Username or Password" << endl;
+			Sleep(1000);
+			if (!isLoggedin)
+			{
+				loginMenu();
+			}
 		}
 	}
 };
 
+void staffMenu()
+{
+	Staff user;
+	int choice = 0;
+	system("cls");
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t # |             ::STAFF MENU::             | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # |            1. Update Info              | #" << endl;
+	cout << "\t\t\t\t # |            2. Show Info                | #" << endl;
+	cout << "\t\t\t\t # |            3. Exit                     | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "Enter Your Choice: ";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		user.updateInfo();
+		break;
+	}
+	case 2:
+	{
+		user.displayInfo();
+	}
+	case 3:
+	{
+		isLoggedin = false;
+		loggedUser.clear();
+		cout << "Returning to Main Menu...";
+		Sleep(1000);
+		MENU();
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+
+void managerMenu()
+{
+	Manager user;
+	int choice = 0;
+	system("cls");
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t # |             ::MANAGER MENU::           | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # |            1. Update Info              | #" << endl;
+	cout << "\t\t\t\t # |            2. Show Info                | #" << endl;
+	cout << "\t\t\t\t # |            3. Exit                     | #" << endl;
+	cout << "\t\t\t\t # |                                        | #" << endl;
+	cout << "\t\t\t\t # ========================================== #" << endl;
+	cout << "\t\t\t\t **********************************************" << endl;
+	cout << "Enter Your Choice: ";
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+	{
+		user.updateInfo();
+		break;
+	}
+	case 2:
+	{
+		user.displayInfo();
+	}
+	case 3:
+	{
+		isLoggedin = false;
+		loggedUser.clear();
+		cout << "Returning to Main Menu...";
+		Sleep(1000);
+		MENU();
+		break;
+	}
+	case 4:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+}

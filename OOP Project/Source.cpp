@@ -16,7 +16,7 @@ using namespace std;
 string Masterkey = "1234";
 string loggedUser;
 bool isLoggedin = false;
-
+bool isAdmin=false;
 void start();
 
 
@@ -24,14 +24,13 @@ void start();
 
 int main()
 {
-	/*Reservation a;
-	a.makeReservation();*/
+	
 	//start();
 	//addManager();
 
 	//addRoom();
-	Authentication a;
-	a.loginMenu();
+	MENU();
+	/*Authentication a;
+	a.signup();*/
 	return 0;
 }
-
