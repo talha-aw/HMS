@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<conio.h>
 #include<string>
@@ -8,8 +9,8 @@
 
 #include"MainMenu.h"
 void MENU();
-
 void TEMP()
 {
 	MENU();
 }
+

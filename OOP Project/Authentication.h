@@ -1,4 +1,6 @@
-﻿#include<iostream>
+﻿#pragma once
+#include"BasicInfo.h"
+#include<iostream>
 #include<conio.h>
 #include<string>
 #include<string.h>
@@ -6,12 +8,12 @@
 #include<fstream>
 #include<sstream>
 #include"temp.h"
-#include"BasicInfo.h"
 #include"Admin.h"
 using namespace std;
 extern bool isLoggedin;
 extern bool isAdmin;
 void staffMenu();
+
 class Authentication
 {
 
@@ -224,6 +226,7 @@ public:
 			{
 				cout << "\t\t\t\t Admin Login Successful"<<endl;
 				isAdmin = true;
+				loggedUser = user.username;
 				AdminMenu();
 				Sleep(1000);
 				
@@ -233,6 +236,7 @@ public:
 			{
 				cout << "\t\t\t\t Guest Login Successful" << endl;
 				Sleep(1000);
+				loggedUser = user.username;
 				Guest gUser;
 				gUser.GuestMenu();
 			}

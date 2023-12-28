@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<conio.h>
 #include<string>
@@ -7,6 +8,11 @@
 #include<sstream>
 #include<chrono>
 #include<iomanip>
+#include<ctime>
+#include"Reservation.h";
+#include"Rooms.h";
+void MENU();
+void ReserveMenu();
 using namespace std;
 extern bool isAdmin;
 extern bool isLoggedin;
@@ -15,7 +21,7 @@ void managerMenu();
 void AmanagerMenu();
 void AstaffMenu();
 void staffMenu();
-
+void foodMenu();
 
 
 
@@ -42,11 +48,25 @@ private:
 	bool isRegistered;
 	string emgContact;
 	long long int wallet;
+protected:
 	string check_in;
 	string check_out;
-	long int ReservationID;
-	long double bill;
+	long double bill=0;
+	long double fbill=0;
+
 public:
+	string getcnic()
+	{
+		return cnic;
+	}
+	void setbill(int type)
+	{
+		bill += type;
+	}
+	void setfbill(int type)
+	{
+		fbill += type;
+	}
 	void GuestMenu()
 	{
 		start:
@@ -57,7 +77,7 @@ public:
 		cout << "\t\t\t\t # |             ::GUEST MENU::             | #" << endl;
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # |            1. Make Reservation         | #" << endl;
-		cout << "\t\t\t\t # |            2. Show Details             | #" << endl;
+		cout << "\t\t\t\t # |            2. Details                  | #" << endl;
 		cout << "\t\t\t\t # |            3. Food Service             | #" << endl;
 		cout << "\t\t\t\t # |            4. Check Out                | #" << endl;
 		cout << "\t\t\t\t # |            5. Log out                  | #" << endl;
@@ -70,10 +90,7 @@ public:
 		{
 		case 1:
 		{
-			Guest gUser;
-			gUser.setInfo();
-			gUser.Registration(gUser);
-			cout << "Registration Successful..";
+			ReserveMenu();
 			Sleep(1000);
 			goto start;
 			break;
@@ -85,6 +102,7 @@ public:
 		}
 		case 3:
 		{
+			foodMenu();
 			break;
 		}
 		case 4:
@@ -156,6 +174,8 @@ public:
 		}
 		case 2:
 		{
+			Room R;
+			R.displayRoom();
 			break;
 		}
 		default:
@@ -260,17 +280,7 @@ public:
 		cin >> wallet;
 		isRegistered = true;
 
-		////To Store Current Time and Date
-		//auto time = std::chrono::system_clock::now();
-		//std::time_t now_c = std::chrono::system_clock::to_time_t(time);
-
-		//
-		//struct tm timeInfo;
-		//localtime_s(&timeInfo, &now_c);
-
-		//stringstream ss;
-		//ss << std::put_time(&timeInfo, "%Y-%m-%d %H:%M:%S");
-		//getline(ss, check_in);
+		
 
 	}
 
@@ -278,6 +288,7 @@ public:
 
 	void Registration(Guest& temp)
 	{
+		
 		ofstream file;
 		file.open("Guest.txt", ios::app|ios::binary);
 		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
@@ -560,3 +571,9 @@ public:
 	}
 
 };
+
+void gMenu()
+{
+	Guest a;
+	a.GuestMenu();
+}

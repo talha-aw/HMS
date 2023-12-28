@@ -7,7 +7,7 @@
 #include<chrono>
 #include<iomanip>
 //#include"Admin.h";
-//#include"Reservation.h";
+ #include "Reservation.h";
 
 //#include"Authentication.h";
 
@@ -24,7 +24,8 @@ void start();
 
 int main()
 {
-	
+	/*Reservation a;
+	a.makeReservation();*/
 	//start();
 	//addManager();
 

@@ -9,7 +9,6 @@
 #include"Rooms.h"
 //#include"BasicInfo.h"
 void roomMenu();
-void addRoom();
 void addManager();
 void addStaff();
 void delStaff();
@@ -17,6 +16,9 @@ void delManager();
 void AstaffMenu();
 void AmanagerMenu();
 void managerMenu();
+void addRoom();
+void delRoom();
+void updRoom();
 
 using namespace std;
 extern bool isLoggedin;
@@ -134,7 +136,7 @@ void AstaffMenu()
 	}
 }
 
-void addStaff()
+void addStaff() //Friend Function of Class Staff
 {
 	Staff user;
 	cout << "Enter Name: ";
@@ -163,7 +165,7 @@ void addStaff()
 	user.Registration(user);
 }
 
-void delStaff()
+void delStaff() //Friend Function of Admin
 {
 	Staff user;
 	bool found = false;
@@ -210,7 +212,7 @@ void delStaff()
 
 
 
-void AmanagerMenu()
+void AmanagerMenu() 
 {
 	Manager user;
 	int choice = 0;
@@ -264,7 +266,7 @@ void AmanagerMenu()
 
 
 }
-void addManager()
+void addManager() //Friend Function of Manager
 {
 	Manager user;
 	cout << "Enter Name: ";
@@ -288,7 +290,7 @@ void addManager()
 	
 	user.Registration(user);
 }
-void delManager()
+void delManager() //Friend Function of Manager
 {
 	Manager user;
 	bool found = false;
@@ -367,10 +369,26 @@ void roomMenu()
 		addRoom();
 		break;
 	}
+	case 2:
+	{
+		delRoom();
+		break;
+	}
+	case 3:
+	{
+		updRoom();
+		break;
+	}
 	case 4:
 	{
 		room.displayRoom();
 		break;
+	}
+	case 5:
+	{
+		cout << "\t\t\t\t Returning to Room Menu....";
+		Sleep(1000);
+		AdminMenu();
 	}
 	default:
 		break;
@@ -436,13 +454,117 @@ void addRoom()
 			file.close();
 		}
 		cout << "\t\t\t\t Room Added Successful \n\t\t\t\t Press Any Key to Continue......" << endl;
+		_getch();
 		Sleep(1000);
+		roomMenu();
 	}
 	else
 	{
 		cout << "\t\t\t\t Room Number Already Exist" << endl;
 		cout << "\t\t\t\t Returning to Menu...." << endl;
 		Sleep(1000);
+		roomMenu();
 	}
 
+}
+
+
+
+void delRoom()
+{
+	Room room;
+	bool found = false;
+	string roomnum;
+	cout << "\t\t\t\t Enter Staff ID:";
+	getline(cin >> ws, roomnum);
+
+	ifstream infile;
+	infile.open("Room.txt", ios::binary);
+	ofstream outfile("tempRoom.txt", ios::binary | ios::app);
+
+	if (infile.is_open() && outfile.is_open()) {
+		while (infile.read(reinterpret_cast<char*>(&room), sizeof(room)))
+		{
+			if (room.roomNum != roomnum)
+			{
+				outfile.write(reinterpret_cast<char*>(&room), sizeof(room));
+			}
+			else {
+				found = true;
+				continue;
+			}
+
+		}
+
+		if (!found) {
+			cout << "\n\n\t\t Room not found" << endl;
+		}
+		else {
+			cout << "\n\n\t\t Room Deleted Successfully!\n";
+		}
+		infile.close();
+		outfile.close();
+		remove("Room.txt");
+		rename("tempRoom.txt", "Room.txt");
+
+	}
+	else {
+		cout << "\n\n\t\tFile doesn't exist";
+	}
+	cout << "press any key to continue!";
+	_getch();
+	if (isAdmin)
+		roomMenu();
+}
+void updRoom()
+{
+	Room room, temp;
+	int size = sizeof(temp);
+	fstream file("Room.txt", ios::binary | ios::in | ios::out);
+	cout << "Enter Room number you want to Update: ";
+	getline(cin >> ws, room.roomNum);
+	if (file.is_open())
+	{
+		while (file.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+		{
+			if (temp.roomNum == room.roomNum)
+			{
+				int Temp;
+				cout << "\t\t\t\t Select Room Type: " << endl;
+				cout << "\t\t\t\t 1.Luxury 2.Suite 3.Economy ";
+				cin >> room.type;
+				cout << "\t\t\t\t Enter Room Number: ";
+				getline(cin >> ws, room.roomNum);
+				cout << "\t\t\t\t Enter Availability Status (1. Yes 2.No) :";
+				cin >> Temp;
+				if (Temp == 1)
+				{
+					room.availability = true;
+				}
+				else
+				{
+					room.availability = false;
+				}
+				if (room.type == 1) // Luxury
+				{
+					room.price = 20000;
+				}
+				else if (room.type == 2) // Suite
+				{
+					room.price = 15000;
+				}
+				if (room.type == 3) // Economy
+				{
+					room.price = 10000;
+				}
+				file.seekp(-size, ios::cur);
+				file.write(reinterpret_cast<char*>(&room), sizeof(room));
+				file.close();
+				cout << "\t\t\t\t Room Updated Successfully";
+				_getch();
+			}
+		}
+	}
+	if (isAdmin)
+		roomMenu();
 }
