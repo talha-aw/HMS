@@ -7,7 +7,6 @@
 #include<windows.h>
 #include<fstream>
 #include<sstream>
-//#include"Reservation.h"
 using namespace std;
 extern bool isAdmin;
 void gMenu();

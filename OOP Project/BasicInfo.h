@@ -6,8 +6,6 @@
 #include<windows.h>
 #include<fstream>
 #include<sstream>
-#include<chrono>
-#include<iomanip>
 #include<ctime>
 #include"Reservation.h";
 #include"Rooms.h";
@@ -51,21 +49,21 @@ private:
 protected:
 	string check_in;
 	string check_out;
-	long double bill=0;
-	long double fbill=0;
+	long double bill;
+	long double fbill;
 
 public:
 	string getcnic()
 	{
 		return cnic;
 	}
-	void setbill(int type)
+	void setbill(int roombill,Guest& G)
 	{
-		bill += type;
+		G.bill += roombill;
 	}
-	void setfbill(int type)
+	void setfbill(int roombill,Guest& G)
 	{
-		fbill += type;
+		G.fbill += roombill;
 	}
 	void GuestMenu()
 	{
@@ -107,6 +105,7 @@ public:
 		}
 		case 4:
 		{
+			checkOut();
 			break;
 		}
 		case 5:
@@ -294,7 +293,52 @@ public:
 		file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 		file.close();
 	}
-	
+	void checkOut()
+	{
+		Guest user, temp;
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |             ::CHECK OUT ::             | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "Enter CNIC you want to update: ";
+		getline(cin >> ws, user.cnic);
+		int size = sizeof(temp);
+		fstream in_out_file("Guest.txt", ios::binary | ios::in | ios::out);
+		if (in_out_file.is_open())
+		{
+			while (in_out_file.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+			{
+				if (temp.cnic == user.cnic)
+				{
+
+					// Update Guest Info
+					time_t now = time(0);
+					// convert now to string form
+					#pragma warning(suppress : 4996). // Exception for ctime
+					char* date_time = ctime(&now);
+					string c;
+					c = date_time;
+					cout << "\t\t\t\t Your Checkout Date was: " << c;
+					cout << "\t\t\t\t Your Balance was: " << temp.wallet;
+					cout << "\t\t\t\t Your Remaining Balance is: " << (temp.wallet-(12500+2000)) <<endl;
+					in_out_file.seekp(-size, ios::cur);
+					in_out_file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
+					in_out_file.close();
+					cout << "\t\t\t\t Guest Checked Out Successfully";
+					_getch();
+				}
+				else
+				{
+					system("pause");
+				}
+			}
+
+		}
+		ReserveMenu();
+	}
+
+
 };
 
 

@@ -10,7 +10,6 @@
 #include"MainMenu.h"
 #include "Rooms.h"
 extern bool isAdmin;
-//#include"temp.h";
 extern string loggedUser;
 void foodMenu();
 
@@ -33,9 +32,8 @@ public:
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # |            1. New Guest     	         | #" << endl;
 		cout << "\t\t\t\t # |            2. Book Room                | #" << endl;
-		cout << "\t\t\t\t # |            3. Staff                    | #" << endl;
-		cout << "\t\t\t\t # |            4. Food                     | #" << endl;
-		cout << "\t\t\t\t # |            5. Log out                  | #" << endl;
+		cout << "\t\t\t\t # |            3. Food                     | #" << endl;
+		cout << "\t\t\t\t # |            4. Log out                  | #" << endl;
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
@@ -84,14 +82,11 @@ public:
 			}
 			case 3:
 			{
-				break;
-			}
-			case 4:
-			{
 				foodMenu();
 				break;
+
 			}
-			case 5:
+			case 4:
 			{
 				cout << "\t\t\t\t Returning to Main Menu...";
 				Sleep(1000);
@@ -136,6 +131,7 @@ void bookRoom()
 
 			string choice;
 			Reservation reserve;
+			int temp1;
 			cout << "\t\t\t\t Select Room Type: " << endl;
 			cout << "\t\t\t\t 1.Luxury (20,000) 2.Suite (15,000) 3.Economy (10,000): ";
 			cin >> reserve.type;
@@ -143,17 +139,17 @@ void bookRoom()
 			{
 			case 1:
 			{
-				G.setbill(20000);
+				G.setbill(20000,G);
 				break;
 			}
 			case 2:
 			{
-				G.setbill(15000);
+				G.setbill(15000,G);
 				break;
 			}
 			case 3:
 			{
-				G.setbill(10000);
+				G.setbill(10000,G);
 				break;
 			}
 			default:
@@ -161,29 +157,29 @@ void bookRoom()
 			}
 			cout << "\t\t\t\t Select Room Size: " << endl;
 			cout << "\t\t\t\t 1.Single 2.Double (Rs.3000) 3.Family: (Rs.5000)";
-			cin >> reserve.size;
-			switch (reserve.size)
+			cin >> temp1;
+			switch (temp1)
 			{
-			if(reserve.size==1)
-			{
-				G.setbill(0);
+				if (temp1 == 1)
+				{
+					G.setbill(0,G);
+				}
+				else if (temp1 == 2)
+				{
+					G.setbill(3000,G);
+				}
+				else
+				{
+					G.setbill(5000,G);
+				}
 			}
-			else if(reserve.size==2)
-			{
-				G.setbill(3000);
-			}
-			else
-			{
-				G.setbill(5000);
-			}
-			
 			cout << "\t\t\t\t Do you want Extra Services? (Like Room services etc)" << endl;
 			cout << "\t\t\t\t Extra Services Charges are: Rs.5000" << endl;
 			cout << "\t\t\t\t Enter Yes or No ";
 			getline(cin >> ws, choice);
 			if (choice == "Yes" || choice == "yes")
 			{
-				G.setbill(5000);
+				G.setbill(5000,G);
 				service = true;
 			}
 			else if (choice == "No" || choice == "no")
@@ -254,14 +250,14 @@ void bookRoom()
 				rfile.close();
 			}
 				makeReservation();
+		}
+			else
+			{
+				cout << "\t\t\t\t Guest not found...";
+				Sleep(1000);
+				makeReservation();
 			}
-		}
-		else
-		{
-			cout << "\t\t\t\t Guest not found...";
-			Sleep(1000);
-			makeReservation();
-		}
+		
 	}
 
 
@@ -310,27 +306,27 @@ void foodMenu()
 					case 1:
 					{
 						cout << "\t\t\t\t Breakfast Deal Purchased..";
-						temp.setfbill(2000);
+						temp.setfbill(2000,temp);
 						break;
 					}
 					case 2:
 					{
 						cout << "\t\t\t\t Brunch Deal Purchased..";
-						temp.setfbill(1500);
+						temp.setfbill(1500,temp);
 						break;
 
 					}
 					case 3:
 					{
 						cout << "\t\t\t\t Lunch Deal Purchased..";
-						temp.setfbill(2000);
+						temp.setfbill(2000,temp);
 						break;
 
 					}
 					case 4:
 					{
 						cout << "\t\t\t\t Dinner Deal Purchased..";
-						temp.setfbill(2500);
+						temp.setfbill(2500,temp);
 						break;
 
 					}

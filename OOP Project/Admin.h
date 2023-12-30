@@ -219,7 +219,7 @@ void AmanagerMenu()
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
-	cout << "\t\t\t\t # |             ::ROOM MENU::              | #" << endl;
+	cout << "\t\t\t\t # |             ::MANAGER MENU::           | #" << endl;
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # |            1. Add Manager              | #" << endl;
 	cout << "\t\t\t\t # |            2. Delete Manager           | #" << endl;
