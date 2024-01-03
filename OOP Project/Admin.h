@@ -38,6 +38,7 @@ void AdminMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -45,10 +46,6 @@ void AdminMenu()
 	case 1:
 	{
 		AmanagerMenu();
-	/*	Guest gUser;
-		gUser.setInfo();
-		gUser.Registration(gUser);
-		cout << "Registration Successful..";*/
 		Sleep(1000);
 		break;
 	}
@@ -75,6 +72,15 @@ void AdminMenu()
 		break;
 	}
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 
@@ -85,7 +91,7 @@ void AdminMenu()
 
 void AstaffMenu()
 {
-	Staff user;
+	Staff<string,string> user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -100,6 +106,7 @@ void AstaffMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -132,13 +139,22 @@ void AstaffMenu()
 		break;
 	}
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 }
 
 void addStaff() //Friend Function of Class Staff
 {
-	Staff user;
+	Staff<string,string> user;
 	cout << "Enter Name: ";
 	getline(cin >> ws, user.name);
 	cout << "Enter Age: ";
@@ -167,7 +183,7 @@ void addStaff() //Friend Function of Class Staff
 
 void delStaff() //Friend Function of Admin
 {
-	Staff user;
+	Staff<string,string> user;
 	bool found = false;
 	string staffid;
 	cout << "\t\t\t\t Enter Staff ID:";
@@ -214,7 +230,7 @@ void delStaff() //Friend Function of Admin
 
 void AmanagerMenu() 
 {
-	Manager user;
+	Manager<string,string> user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -229,6 +245,7 @@ void AmanagerMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -261,6 +278,15 @@ void AmanagerMenu()
 		AdminMenu();
 	}
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 
@@ -268,7 +294,7 @@ void AmanagerMenu()
 }
 void addManager() //Friend Function of Manager
 {
-	Manager user;
+	Manager<string,string> user;
 	cout << "Enter Name: ";
 	getline(cin >> ws, user.name);
 	cout << "Enter Age: ";
@@ -292,7 +318,7 @@ void addManager() //Friend Function of Manager
 }
 void delManager() //Friend Function of Manager
 {
-	Manager user;
+	Manager<string,string> user;
 	bool found = false;
 	string Manid;
 	cout << "\t\t\t\t Enter Staff ID:";
@@ -345,7 +371,7 @@ void delManager() //Friend Function of Manager
 
 void roomMenu()
 {
-	Room room;
+	Room<string> room;
 	int choice=0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -360,6 +386,7 @@ void roomMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -391,13 +418,22 @@ void roomMenu()
 		AdminMenu();
 	}
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 }
 void addRoom()
 {
 	int Temp;
-	Room addroom;
+	Room<string> addroom;
 	cout << "\t\t\t\t Select Room Type: "<<endl;
 	cout << "\t\t\t\t 1.Luxury 2.Suite 3.Economy " ;
 	cin >> addroom.type;
@@ -427,7 +463,7 @@ void addRoom()
 	}
 
 	//Writing to File
-	Room temp;
+	Room<string> temp;
 	bool isFind = false; //Finds Room with same number
 	int TYPE = 0;
 	ifstream rfile("Room.txt", ios::binary);
@@ -472,7 +508,7 @@ void addRoom()
 
 void delRoom()
 {
-	Room room;
+	Room<string> room;
 	bool found = false;
 	string roomnum;
 	cout << "\t\t\t\t Enter Staff ID:";
@@ -518,7 +554,7 @@ void delRoom()
 }
 void updRoom()
 {
-	Room room, temp;
+	Room<string> room, temp;
 	int size = sizeof(temp);
 	fstream file("Room.txt", ios::binary | ios::in | ios::out);
 	cout << "Enter Room number you want to Update: ";

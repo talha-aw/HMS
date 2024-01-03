@@ -11,11 +11,11 @@ using namespace std;
 extern bool isAdmin;
 void gMenu();
 void roomMenu();
-
+template<class r>
 class Room
 {
 private:
-	string roomNum;
+	r roomNum;
 	int type; //1.Luxury 2.Suite 3.Economy
 	bool availability;
 	long int price;
@@ -31,7 +31,7 @@ public:
 	{
 		availability = false;
 	}
-	string getroomNum()
+	r getroomNum()
 	{
 		return roomNum;
 	}
@@ -48,7 +48,7 @@ public:
 
 	void displayRoom()
 	{
-		Room temp;
+		Room  temp;
 		ifstream rfile;
 		rfile.open("Room.txt", ios::binary);
 		if (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))

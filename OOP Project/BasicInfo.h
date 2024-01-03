@@ -23,51 +23,73 @@ void foodMenu();
 
 
 
-
+template<class X>
 class basicInfo //Abstract class
 {
 protected:
-	string name;
+	X name;
 	int age;
-	string cnic;
-	string address;
-	string phone;
-	string gender;
-	string email;
+	X cnic;
+	X address;
+	X phone;
+	X gender;
+	X email;
 public:
 	virtual void displayInfo() = 0; // Pure virtual function
 	virtual void setInfo() {}; //virtual
 	virtual void updateInfo() {};
+	X getcnic()
+	{
+		return cnic;
+	}
 };
-
-class Guest :public basicInfo
+template<class X,class Y>
+class Guest :public basicInfo<X>
 {
 private:
 	bool isRegistered;
-	string emgContact;
+	Y emgContact;
 	long long int wallet;
 protected:
-	string check_in;
-	string check_out;
+	Y check_in;
+	Y check_out;
 	long double bill;
 	long double fbill;
 
 public:
-	string getcnic()
+	
+	long double getbill()
 	{
-		return cnic;
+		return bill;
 	}
-	void setbill(int roombill,Guest& G)
+	long double getfbill()
 	{
-		G.bill += roombill;
+		return fbill;
 	}
-	void setfbill(int roombill,Guest& G)
+	void setbill(int roombill,Guest<string,string>&G )
 	{
-		G.fbill += roombill;
+		if (G.bill <  0)
+		{
+			G.bill = roombill;
+		}
+		else
+		{
+			G.bill += roombill;
+		}
+	}
+	void setfbill(int roombill,Guest<string,string>& G)
+	{
+		if (G.fbill < 0)
+		{
+			G.fbill = roombill;
+		}
+		else
+		{
+			G.fbill += roombill;
+		}
 	}
 	void GuestMenu()
 	{
-		start:
 		int choice=0;
 		system("cls");
 		cout << "\t\t\t\t **********************************************" << endl;
@@ -82,6 +104,7 @@ public:
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		start:
 		cout << "Enter Your Choice: ";
 		cin >> choice;
 		switch (choice)
@@ -90,7 +113,6 @@ public:
 		{
 			ReserveMenu();
 			Sleep(1000);
-			goto start;
 			break;
 		}
 		case 2:
@@ -116,7 +138,17 @@ public:
 			break;
 		}
 		default:
+			cout << "\t\t\t\t Invalid Choice" << endl;
+			cout << "\t\t\t\t Try Again" << endl;
+			cin.clear();
+			while (cin.get() != '\n')
+			{
+				continue;
+			}
+			Sleep(1500);
+			goto start;
 			break;
+			
 		}
 	}
 
@@ -134,6 +166,7 @@ public:
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		start:
 		cout << "Enter Your Choice: ";
 		cin >> choice;
 		switch (choice)	
@@ -151,6 +184,7 @@ public:
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;
 			cout << "\t\t\t\t **********************************************" << endl;
+			start2:
 			cout << "\t\t\t\t Enter Choice: ";
 			cin >> option;
 			if (option == 1)
@@ -168,16 +202,37 @@ public:
 				Sleep(1000);
 				GuestMenu();
 			}
+			else
+			{
+				cout << "\t\t\t\t Invalid Choice" << endl;
+				cout << "\t\t\t\t Try Again" << endl;
+				cin.clear();
+				while (cin.get() != '\n')
+				{
+					continue;
+				}
+				Sleep(1500);
+				goto start;
+			}
 
 			break;
 		}
 		case 2:
 		{
-			Room R;
+			Room<string> R;
 			R.displayRoom();
 			break;
 		}
 		default:
+			cout << "\t\t\t\t Invalid Choice" << endl;
+			cout << "\t\t\t\t Try Again" << endl;
+			cin.clear();
+			while (cin.get() != '\n')
+			{
+				continue;
+			}
+			Sleep(1500);
+			goto start;
 			break;
 		}
 
@@ -186,7 +241,7 @@ public:
 	}
 	void displayInfo()
 	{
-		Guest temp;
+		Guest <string,string> temp;
 		ifstream rfile;
 		int count = 0;
 		rfile.open("Guest.txt",ios::binary);
@@ -215,7 +270,7 @@ public:
 	}
 	void updateInfo()
 	{
-		Guest user, temp;
+		Guest <string,string> user, temp;
 		cout << "Enter CNIC you want to update: ";
 		getline(cin >> ws, user.cnic);
 		int size = sizeof(temp);
@@ -260,21 +315,21 @@ public:
 	void setInfo()
 	{
 		cout << "Enter Name: ";
-		getline(cin >> ws, name);
+		getline(cin >> ws, this->name);
 		cout << "Enter Age: ";
-		cin >> age;
+		cin >> this->age;
 		cout << "Enter CNIC: ";
-		getline(cin >> ws, cnic);
+		getline(cin >> ws, this->cnic);
 		cout << "Enter Phone Number: ";
-		getline(cin >> ws, phone);
+		getline(cin >> ws, this->phone);
 		cout << "Enter Address: ";
-		getline(cin >> ws, address);
+		getline(cin >> ws, this->address);
 		cout << "Enter Gender: ";
-		getline(cin >> ws, gender);
+		getline(cin >> ws, this->gender);
 		cout << "Enter Emergency Contact: ";
-		getline(cin >> ws, emgContact);
+		getline(cin >> ws, this->emgContact);
 		cout << "Enter Email: ";
-		getline(cin >> ws, email);
+		getline(cin >> ws, this->email);
 		cout << "Enter Amount in Your Hotel's Wallet: ";
 		cin >> wallet;
 		isRegistered = true;
@@ -285,7 +340,7 @@ public:
 
 
 
-	void Registration(Guest& temp)
+	void Registration(Guest<string,string> &temp)
 	{
 		
 		ofstream file;
@@ -295,7 +350,7 @@ public:
 	}
 	void checkOut()
 	{
-		Guest user, temp;
+		Guest <string,string> user, temp;
 		cout << "\t\t\t\t **********************************************" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t # |             ::CHECK OUT ::             | #" << endl;
@@ -320,19 +375,17 @@ public:
 					string c;
 					c = date_time;
 					cout << "\t\t\t\t Your Checkout Date was: " << c;
-					cout << "\t\t\t\t Your Balance was: " << temp.wallet;
-					cout << "\t\t\t\t Your Remaining Balance is: " << (temp.wallet-(12500+2000)) <<endl;
+					cout << "\t\t\t\t Your Balance was: " << temp.wallet<<endl;
+					cout << "\t\t\t\t Your Remaining Balance is: " << (temp.wallet-(temp.bill+temp.fbill)) <<endl;
+					temp.wallet = (temp.wallet - (temp.bill + temp.fbill));
 					in_out_file.seekp(-size, ios::cur);
 					in_out_file.write(reinterpret_cast<char*>(&temp), sizeof(temp));
 					in_out_file.close();
 					cout << "\t\t\t\t Guest Checked Out Successfully";
 					_getch();
 				}
-				else
-				{
-					system("pause");
-				}
 			}
+					system("pause");
 
 		}
 		ReserveMenu();
@@ -344,26 +397,27 @@ public:
 
 
 
-
-class Staff :public basicInfo {
+template<class x,class z>
+class Staff :public basicInfo<z>
+{
 private:
-	string staffId;
-	string Role;
+	z staffId;
+	z Role;
 	double Salary;
-	string Shift;
-	string password;
+	z Shift;
+	z password;
 	friend void addStaff();
 	friend void delStaff();
 public:
-	string getstaffId()
+	z getstaffId()
 	{
 		return staffId;
 	}
-	string getpassword()
+	z getpassword()
 	{
 		return password;
 	}
-	void Registration(Staff& temp)
+	void Registration(Staff<string,string>& temp)
 	{
 		ofstream file;
 		file.open("Staff.txt", ios::app | ios::binary);
@@ -374,7 +428,7 @@ public:
 	
 	void displayInfo()
 	{
-		Staff temp;
+		Staff<string,string> temp;
 		ifstream rfile;
 		rfile.open("Staff.txt", ios::binary);
 		if (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
@@ -434,7 +488,7 @@ public:
 	}
 	void updateInfo()
 	{
-		Staff user, temp;
+		Staff<string,string> user, temp;
 		int size = sizeof(temp);
 		fstream file("Staff.txt", ios::binary | ios::in | ios::out);
 		cout << "Enter Staff ID you want to Update: ";
@@ -487,24 +541,25 @@ public:
 
 
 
-
-class Manager :public basicInfo {
+template<class x,class v>
+class Manager :public basicInfo<x> 
+{
 private:
-	string ManId;
+	v ManId;
 	double Salary;
-	string password;
+	v password;
 public:
 	friend void addManager();
 	friend void delManager();
-	string getManId()
+	v getManId()
 	{
 		return ManId;
 	}
-	string getpassword()
+v getpassword()
 	{
 		return password;
 	}
-	void Registration(Manager& temp)
+	void Registration(Manager<string,string>& temp)
 	{
 		ofstream file;
 		file.open("Manager.txt", ios::app | ios::binary);
@@ -517,7 +572,7 @@ public:
 
 	void displayInfo()
 	{
-		Manager temp;
+		Manager<string,string> temp;
 		ifstream rfile;
 		rfile.open("Manager.txt", ios::binary);
 		if (rfile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
@@ -574,7 +629,7 @@ public:
 	}
 	void updateInfo()
 	{
-		Manager user, temp;
+		Manager<string,string> user, temp;
 		int size = sizeof(temp);
 		fstream file("Manager.txt", ios::binary | ios::in | ios::out);
 		cout << "Enter Manager ID you want to Update: ";
@@ -618,6 +673,6 @@ public:
 
 void gMenu()
 {
-	Guest a;
+	Guest<string,string> a;
 	a.GuestMenu();
 }

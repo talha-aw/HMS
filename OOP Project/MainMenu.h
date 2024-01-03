@@ -63,66 +63,75 @@ void MENU()
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # |            1. Sign Up                  | #" << endl;
 		cout << "\t\t\t\t # |            2. Login                    | #" << endl;
-		cout << "\t\t\t\t # |            3. About                    | #" << endl;
-		cout << "\t\t\t\t # |            4. Sign Out                 | #" << endl;
-		cout << "\t\t\t\t # |            5. Exit                     | #" << endl;
+		cout << "\t\t\t\t # |            3. Sign Out                 | #" << endl;
+		cout << "\t\t\t\t # |            4. Exit                     | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		start:
 		int choice=0;
 		cout << "\t\t\t\t Enter Choice: ";
 		cin >> choice;
-		switch (choice)
-		{
-		case 1:
-		{
-			if (!isLoggedin)
+			switch (choice)
+			{
+			case 1:
+			{
+				if (!isLoggedin)
+				{
+					Authentication user;
+					user.signup();
+				}
+				else
+				{
+					cout << "\t\t\t\t User is Already Logged In" << endl;
+					Sleep(1000);
+				}
+				break;
+			}
+			case 2:
 			{
 				Authentication user;
-				user.signup();
+				if (!isLoggedin)
+				{
+					user.loginMenu();
+				}
+				else
+				{
+					user.loginMenu();
+				}
+				break;
 			}
-			else
+			case 3:
 			{
-				cout << "\t\t\t\t User is Already Logged In" << endl;
-				Sleep(1000);
+				if (isLoggedin)
+				{
+					cout << "\t\t\t\t Sign out Successful";
+					isLoggedin = false;
+					Sleep(1000);
+				}
+				break;
 			}
-			break;
-		}
-		case 2:
-		{
-			Authentication user;
-			if (!isLoggedin)
+			case 4:
 			{
-				user.loginMenu();
+				display();
+				cout << "\t\t\t\t\t\t    WAYNE MANOR since 1989  ";
+				Sleep(2000);
+				exit(0);
 			}
-			else
+			default:
+				
 			{
-				user.loginMenu();
+				cout << "\t\t\t\t Invalid Choice" << endl;
+				cout << "\t\t\t\t Try Again" << endl;
+				cin.clear();
+				while (cin.get() != '\n')
+				{
+					continue;
+				}
+				Sleep(1500);
+				goto start;
+				break;
+				}
 			}
-			break;
-		}
-		case 4:
-		{
-			if (isLoggedin)
-			{
-				cout << "\t\t\t\t Sign out Successful";
-				isLoggedin = false;
-				Sleep(1000);
-			}
-			break;
-		}
-		case 5:
-		{
-			display();
-			cout << "\t\t\t\t\t\t    WAYNE MANOR since 1989  ";
-			Sleep(2000);
-			exit(0);
-		}
-		default:
-			cout << "\t\t\t\t Invalid Choice"<<endl;
-			cout << "\t\t\t\t Try Again"<<endl;
-			Sleep(1500);
-			break;
-		}
 	}
 
 }

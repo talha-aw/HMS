@@ -47,6 +47,7 @@ public:
 		cout << "\t\t\t\t # |                                        | #" << endl;
 		cout << "\t\t\t\t # ========================================== #" << endl;
 		cout << "\t\t\t\t **********************************************" << endl;
+		start:
 		cout << "\t\t\t\t Enter Your Choice: ";
 		cin >> choice;
 		extern string Masterkey; //Access Global Variable from main
@@ -79,8 +80,15 @@ public:
 		}
 		
 		default:
-			cout << "\t\t\t\t Invalid Option";
-			exit(0);
+			cout << "\t\t\t\t Invalid Choice" << endl;
+			cout << "\t\t\t\t Try Again" << endl;
+			cin.clear();
+			while (cin.get() != '\n')
+			{
+				continue;
+			}
+			Sleep(1500);
+			goto start;
 			break;
 		}
 	}
@@ -146,6 +154,7 @@ public:
 			cout << "\t\t\t\t # |                                        | #" << endl;
 			cout << "\t\t\t\t # ========================================== #" << endl;
 			cout << "\t\t\t\t **********************************************" << endl;
+			start:
 			cout << "\t\t\t\t Enter Your Choice: ";
 			cin >> choice;
 			switch (choice)
@@ -178,8 +187,15 @@ public:
 				break;
 			}
 			default:
-				cout << "\t\t\t\t Invalid Choice";
-				Sleep(1000);
+				cout << "\t\t\t\t Invalid Choice" << endl;
+				cout << "\t\t\t\t Try Again" << endl;
+				cin.clear();
+				while (cin.get() != '\n')
+				{
+					continue;
+				}
+				Sleep(1500);
+				goto start;
 				break;
 			}
 		
@@ -237,7 +253,7 @@ public:
 				cout << "\t\t\t\t Guest Login Successful" << endl;
 				Sleep(1000);
 				loggedUser = user.username;
-				Guest gUser;
+				Guest <string,string> gUser;
 				gUser.GuestMenu();
 			}
 		}
@@ -267,7 +283,7 @@ public:
 		cout << "\t\t\t\t Enter Password: ";
 		getline(cin >> ws, user.password);
 		bool isFound = false;
-		Staff temp;
+		Staff<string,string> temp;
 		ifstream rfile("Staff.txt", ios::binary);
 		if (rfile.is_open())
 		{
@@ -318,7 +334,7 @@ public:
 		cout << "\t\t\t\t Enter Password: ";
 		getline(cin >> ws, user.password);
 		bool isFound = false;
-		Manager temp;
+		Manager<string,string> temp;
 		ifstream rfile("Manager.txt", ios::binary);
 		if (rfile.is_open())
 		{
@@ -356,7 +372,7 @@ public:
 
 void staffMenu()
 {
-	Staff user;
+	Staff<string,string> user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -369,6 +385,7 @@ void staffMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -391,11 +408,17 @@ void staffMenu()
 		MENU();
 		break;
 	}
-	case 4:
-	{
-		break;
-	}
+	
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 }
@@ -403,7 +426,7 @@ void staffMenu()
 
 void managerMenu()
 {
-	Manager user;
+	Manager<string,string> user;
 	int choice = 0;
 	system("cls");
 	cout << "\t\t\t\t **********************************************" << endl;
@@ -416,6 +439,7 @@ void managerMenu()
 	cout << "\t\t\t\t # |                                        | #" << endl;
 	cout << "\t\t\t\t # ========================================== #" << endl;
 	cout << "\t\t\t\t **********************************************" << endl;
+	start:
 	cout << "Enter Your Choice: ";
 	cin >> choice;
 	switch (choice)
@@ -438,11 +462,17 @@ void managerMenu()
 		MENU();
 		break;
 	}
-	case 4:
-	{
-		break;
-	}
+	
 	default:
+		cout << "\t\t\t\t Invalid Choice" << endl;
+		cout << "\t\t\t\t Try Again" << endl;
+		cin.clear();
+		while (cin.get() != '\n')
+		{
+			continue;
+		}
+		Sleep(1500);
+		goto start;
 		break;
 	}
 }

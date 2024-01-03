@@ -12,8 +12,9 @@
 extern bool isAdmin;
 extern string loggedUser;
 void foodMenu();
-
-class Reservation : public Guest, public Room
+void GuestMenu();
+template<class r> 
+class Reservation : public Guest<string,string>, public Room<r>
 {
 private:
 	int type;
@@ -23,90 +24,99 @@ private:
 public:
 	void makeReservation()
 	{
-		start:
-		int choice=0;
-		system("cls");
-		cout << "\t\t\t\t **********************************************" << endl;
-		cout << "\t\t\t\t # ========================================== #" << endl;
-		cout << "\t\t\t\t # |            ::RESERVATION MENU::        | #" << endl;
-		cout << "\t\t\t\t # |                                        | #" << endl;
-		cout << "\t\t\t\t # |            1. New Guest     	         | #" << endl;
-		cout << "\t\t\t\t # |            2. Book Room                | #" << endl;
-		cout << "\t\t\t\t # |            3. Food                     | #" << endl;
-		cout << "\t\t\t\t # |            4. Log out                  | #" << endl;
-		cout << "\t\t\t\t # |                                        | #" << endl;
-		cout << "\t\t\t\t # ========================================== #" << endl;
-		cout << "\t\t\t\t **********************************************" << endl;
-		cout << "Enter Your Choice: ";
-		if (cin >> choice)
-		{
+		
+			int choice=0;
+			system("cls");
+			cout << "\t\t\t\t **********************************************" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t # |            ::RESERVATION MENU::        | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # |            1. New Guest     	         | #" << endl;
+			cout << "\t\t\t\t # |            2. Book Room                | #" << endl;
+			cout << "\t\t\t\t # |            3. Food                     | #" << endl;
+			cout << "\t\t\t\t # |            4. Log out                  | #" << endl;
+			cout << "\t\t\t\t # |                                        | #" << endl;
+			cout << "\t\t\t\t # ========================================== #" << endl;
+			cout << "\t\t\t\t **********************************************" << endl;
+			start:
+			choice = 0;
+			cout << "Enter Your Choice: ";
+			cin >> choice;
+			{
 
-			switch (choice)
-			{
-			case 1:
-			{
-				Guest gUser,temp;
-				bool isFound=false;
-				gUser.setInfo();
-				ifstream rFile("Guest.txt", ios::binary);
-				if (rFile.is_open())
+				switch (choice)
 				{
-					if (rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
+				case 1:
+				{
+					Guest <string,string> gUser,temp;
+					bool isFound=false;
+					gUser.setInfo();
+					ifstream rFile("Guest.txt", ios::binary);
+					if (rFile.is_open())
 					{
-						while (!rFile.eof())
+						if (rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 						{
-							if (gUser.getcnic() == temp.getcnic())
+							while (!rFile.eof())
 							{
-								cout << "\t\t\t\t CNIC Already Exist... You can Book Room";
-								Sleep(1000);
-								makeReservation();
-								break;
+								if (gUser.getcnic() == temp.getcnic())
+								{
+									cout << "\t\t\t\t CNIC Already Exist... You can Book Room";
+									Sleep(1000);
+									makeReservation();
+									break;
+								}
+								rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 							}
-							rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 						}
+
 					}
+						gUser.Registration(gUser);
+						cout << "Registration Successful..";
+						Sleep(1000);
+						makeReservation();
+						break;
+				
+				}
+				case 2:
+				{
+				
+					bookRoom();
+					break;
+				}
+				case 3:
+				{
+					foodMenu();
+					break;
 
 				}
-					gUser.Registration(gUser);
-					cout << "Registration Successful..";
+				case 4:
+				{
+					cout << "\t\t\t\t Returning to Main Menu...";
 					Sleep(1000);
-					makeReservation();
+					GuestMenu();
 					break;
-				
-			}
-			case 2:
-			{
-				
-				bookRoom();
-				break;
-			}
-			case 3:
-			{
-				foodMenu();
-				break;
+				}
+				default:
+					{
+					cout << "\t\t\t\t Invalid input. Select from 1 to 4";
+					cin.clear();
+					while (cin.get() != '\n')
+					{
+						continue;
+					}
+					Sleep(1500);
+					goto start;
+					break;
 
+					}
+				}
 			}
-			case 4:
-			{
-				cout << "\t\t\t\t Returning to Main Menu...";
-				Sleep(1000);
-				GuestMenu();
-				break;
-			}
-			default:
-				break;
-			}
-		}
-		else
-		{
-			cout << "\t\t\t\t Enter Integer...";
-			system("pause");
-		}
+			
 	}
 
 void bookRoom()
 {
-		Guest G;
+		Guest<string,string> G;
 		int sizeG = sizeof(G);
 		string cnic;
 		bool isFound = false; //Room Found
@@ -124,6 +134,7 @@ void bookRoom()
 					isGuest = true;
 				}
 			}
+			file.close();
 		}
 
 		if (isGuest)
@@ -133,6 +144,7 @@ void bookRoom()
 			Reservation reserve;
 			int temp1;
 			cout << "\t\t\t\t Select Room Type: " << endl;
+			start:
 			cout << "\t\t\t\t 1.Luxury (20,000) 2.Suite (15,000) 3.Economy (10,000): ";
 			cin >> reserve.type;
 			switch (reserve.type)
@@ -153,28 +165,52 @@ void bookRoom()
 				break;
 			}
 			default:
+				cout << "\t\t\t\t Invalid input. Please enter integer.\n";
+				cin.clear();
+				while (cin.get() != '\n') {
+					continue;
+				}
+				goto start;
 				break;
 			}
 			cout << "\t\t\t\t Select Room Size: " << endl;
+			start2:
 			cout << "\t\t\t\t 1.Single 2.Double (Rs.3000) 3.Family: (Rs.5000)";
 			cin >> temp1;
 			switch (temp1)
 			{
-				if (temp1 == 1)
+			case 1:
 				{
 					G.setbill(0,G);
+					break;
 				}
-				else if (temp1 == 2)
+			case 2:
 				{
 					G.setbill(3000,G);
+					break;
+
 				}
-				else
+			case 3:
 				{
 					G.setbill(5000,G);
+					break;
 				}
+			default:
+			{
+
+				cin.clear();
+				while (cin.get() != '\n')
+				{
+					continue;
+				}
+				Sleep(1500);
+				goto start2;
+				break;
+			}
 			}
 			cout << "\t\t\t\t Do you want Extra Services? (Like Room services etc)" << endl;
 			cout << "\t\t\t\t Extra Services Charges are: Rs.5000" << endl;
+			start3:
 			cout << "\t\t\t\t Enter Yes or No ";
 			getline(cin >> ws, choice);
 			if (choice == "Yes" || choice == "yes")
@@ -189,9 +225,16 @@ void bookRoom()
 			else
 			{
 				cout << "\t\t\t\t Invalid Input";
+				cin.clear();
+				while (cin.get() != '\n')
+				{
+					continue;
+				}
+				Sleep(1500);
+				goto start3;
 			}
 
-			Room temp;
+			Room<string>temp;
 			int size = sizeof(temp);
 			fstream rfile("Room.txt", ios::binary | ios::in | ios::out);
 			if (rfile.is_open())
@@ -221,25 +264,36 @@ void bookRoom()
 						rfile.seekp(-size, ios::cur);
 						temp.setavailabilityfalse();
 						rfile.write(reinterpret_cast<char*>(&temp), sizeof(temp));
-
-
-						// Update Guest Info
-						time_t now = time(0);
-						// convert now to string form
-#pragma warning(suppress : 4996). // Exception for ctime
-						char* date_time = ctime(&now);
-						check_in = date_time;
-						//Adding Room Bills
-
-						file.seekp(-sizeG, ios::cur);
-						file.write(reinterpret_cast<char*>(&G), sizeof(G));
-						break;
+						Guest<string,string> a;
+						fstream file("Guest.txt", ios::binary | ios::in | ios::out);
+						if (file.is_open())
+						{
+							while (file.read(reinterpret_cast<char*>(&a), sizeof(a)))
+							{
+								if (a.getcnic() == cnic)
+								{
+									// Update Guest Info
+									time_t now = time(0);
+									// convert now to string form
+									#pragma warning(suppress : 4996). // Exception for ctime
+									char* date_time = ctime(&now);
+									this->check_in = date_time;
+									//Adding Room Bills
+									file.seekp(-sizeG, ios::cur);
+									file.write(reinterpret_cast<char*>(&G), sizeof(G));
+									break;
+								}
+							}
+							file.close();
+						}
 					}
 				}
+			}
 				if (!isFound)
 				{
 					cout << "\t\t\t\t Room not Available. Try Other Room Type....";
 					Sleep(1800);
+					rfile.close();
 					makeReservation();
 				}
 				else
@@ -248,7 +302,6 @@ void bookRoom()
 					_getch();
 				}
 				rfile.close();
-			}
 				makeReservation();
 		}
 			else
@@ -266,82 +319,101 @@ void bookRoom()
 
 void ReserveMenu()
 {
-	Reservation a;
+	Reservation<string> a;
 	a.makeReservation();
 }
 
 void foodMenu()
 {
 	int choice = 0;
-	system("cls");
-	cout << "\t\t\t\t **********************************************" << endl;
-	cout << "\t\t\t\t # ========================================== #" << endl;
-	cout << "\t\t\t\t # |             ::FOOD MENU::              | #" << endl;
-	cout << "\t\t\t\t # |                                        | #" << endl;
-	cout << "\t\t\t\t # |         1. Breakfast Deal (2000)       | #" << endl;
-	cout << "\t\t\t\t # |         2. Brunch Deal    (1500)       | #" << endl;
-	cout << "\t\t\t\t # |         3. Lunch Deal     (2000)       | #" << endl;
-	cout << "\t\t\t\t # |         4. Dinner Deal    (2500)       | #" << endl;
-	cout << "\t\t\t\t # |         5. Exit                        | #" << endl;
-	cout << "\t\t\t\t # |                                        | #" << endl;
-	cout << "\t\t\t\t # ========================================== #" << endl;
-	cout << "\t\t\t\t **********************************************" << endl;
-	cout << "Enter Your Choice: ";
-	cin >> choice;
-	string cnic;
-	cout << "\t\t\t\t Enter CNIC: ";
-	getline(cin >> ws, cnic);
-	Guest temp;
-	ifstream rFile("Guest.txt", ios::binary);
-	if (rFile.is_open())
-	{
-		if (rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
-		{
-			while (!rFile.eof())
+
+	
+		choice = 0;
+		system("cls");
+		cout << "\t\t\t\t **********************************************" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t # |             ::FOOD MENU::              | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # |         1. Breakfast Deal (2000)       | #" << endl;
+		cout << "\t\t\t\t # |         2. Brunch Deal    (1500)       | #" << endl;
+		cout << "\t\t\t\t # |         3. Lunch Deal     (2000)       | #" << endl;
+		cout << "\t\t\t\t # |         4. Dinner Deal    (2500)       | #" << endl;
+		cout << "\t\t\t\t # |         5. Exit                        | #" << endl;
+		cout << "\t\t\t\t # |                                        | #" << endl;
+		cout << "\t\t\t\t # ========================================== #" << endl;
+		cout << "\t\t\t\t **********************************************" << endl;
+			string cnic;
+			cout << "\t\t\t\t Enter CNIC: ";
+			getline(cin >> ws, cnic);
+			Guest <string,string> temp;
+			int size = sizeof(temp);
+			fstream rFile("Guest.txt", ios::binary|ios::in|ios::out);
+			if (rFile.is_open())
 			{
-				if (cnic == temp.getcnic())
+				if (rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp)))
 				{
-					switch (choice)
+					while (!rFile.eof())
 					{
-					case 1:
-					{
-						cout << "\t\t\t\t Breakfast Deal Purchased..";
-						temp.setfbill(2000,temp);
-						break;
-					}
-					case 2:
-					{
-						cout << "\t\t\t\t Brunch Deal Purchased..";
-						temp.setfbill(1500,temp);
-						break;
+						if (cnic == temp.getcnic())
+						{
+							start:
+							cout << "Enter Your Choice: ";
+							cin >> choice;
+							switch (choice)
+							{
+							case 1:
+							{
+								cout << "\t\t\t\t Breakfast Deal Purchased..";
+								temp.setfbill(2000, temp);
+								break;
+							}
+							case 2:
+							{
+								cout << "\t\t\t\t Brunch Deal Purchased..";
+								temp.setfbill(1500, temp);
+								break;
 
-					}
-					case 3:
-					{
-						cout << "\t\t\t\t Lunch Deal Purchased..";
-						temp.setfbill(2000,temp);
-						break;
+							}
+							case 3:
+							{
+								cout << "\t\t\t\t Lunch Deal Purchased..";
+								temp.setfbill(2000, temp);
+								break;
 
-					}
-					case 4:
-					{
-						cout << "\t\t\t\t Dinner Deal Purchased..";
-						temp.setfbill(2500,temp);
-						break;
+							}
+							case 4:
+							{
+								cout << "\t\t\t\t Dinner Deal Purchased..";
+								temp.setfbill(2500, temp);
+								break;
 
+							}
+							default:
+								cout << "\t\t\t\t Invalid Choice...";
+								cout << "\t\t\t\t Invalid input. Please enter integer.\n";
+								cin.clear();
+								while (cin.get() != '\n') {
+									continue;
+								}
+								Sleep(1000);
+								goto start;
+								break;
+							}
+							break;
+						}
+						rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
 					}
-					default:
-						cout << "\t\t\t\t Invalid Choice...";
-						Sleep(1000);
-						foodMenu();
-						break;
-					}
-					break;
+					rFile.seekp(-size, ios::cur);
+					rFile.write(reinterpret_cast<char*>(&temp), sizeof(temp));
+					rFile.close();
+
 				}
-				rFile.read(reinterpret_cast<char*>(&temp), sizeof(temp));
+				else 
+				{
+					cout << "\t\t\t\t Guest not found....";
+					Sleep(1000);
+				}
 			}
-		}
-
-	}
-	ReserveMenu();
+	
+		ReserveMenu();
 }
